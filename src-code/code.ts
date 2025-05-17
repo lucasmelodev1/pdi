@@ -23,3 +23,12 @@ listenTS("createSvg", (res) => {
 listenTS("closePlugin", () => {
   figma.closePlugin();
 });
+
+listenTS("openImage", (msg) => {
+  const pngBytes = new Uint8Array(msg.buffer);
+  const image = figma.createImage(pngBytes);
+  const node = figma.createRectangle();
+  node.resize(msg.width, msg.height);
+  node.fills = [{ type: "IMAGE", imageHash: image.hash, scaleMode: "FILL" }];
+  figma.currentPage.appendChild(node);
+});

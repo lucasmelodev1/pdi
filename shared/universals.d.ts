@@ -3,4 +3,9 @@ export interface EventTS {
     svg: string;
   };
   closePlugin: {};
+  openImage: {
+    width: number;
+    height: number;
+    buffer: ArrayBuffer;
+  };
 }
