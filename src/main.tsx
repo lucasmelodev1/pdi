@@ -38,6 +38,8 @@ import Rotation from "./components/transformations/rotation";
 import rotation from "./utils/transformations/rotation";
 import Reflection from "./components/transformations/reflection";
 import reflection from "./utils/transformations/reflection";
+import translation from "./utils/transformations/translation";
+import Translation from "./components/transformations/translation";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -147,6 +149,14 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
 
       break;
     }
+    case "translation": {
+      const scaleResult = await translation(bytes, t.x, t.y);
+      newBytes = scaleResult.newBytes;
+      newWidth = scaleResult.newWidth;
+      newHeight = scaleResult.newHeight;
+
+      break;
+    }
   }
 
   dispatchTS("openImage", {
@@ -239,6 +249,7 @@ export const App = () => {
               <Skew />
               <Rotation />
               <Reflection />
+              <Translation />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

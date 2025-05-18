@@ -14,6 +14,11 @@ type Transformation =
       y: number;
     }
   | {
+      type: "translation";
+      x: number;
+      y: number;
+    }
+  | {
       type: "skew";
       x: number;
       y: number;
