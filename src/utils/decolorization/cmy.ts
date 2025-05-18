@@ -2,7 +2,7 @@ import decode from "../decode";
 import encode from "../encode";
 import type { DecomposedImage } from "./utils/decompose";
 
-export default async function decomposeCMYK(
+export default async function decomposeCMY(
   bytes: Uint8Array,
 ): Promise<DecomposedImage[]> {
   const canvas = document.createElement("canvas");
@@ -10,11 +10,11 @@ export default async function decomposeCMYK(
   const imageData = await decode(canvas, ctx, bytes);
   const { data, width, height } = imageData;
 
+  // 3 channels: C, M, Y
   const channels = [
-    new Uint8ClampedArray(data.length), // C
-    new Uint8ClampedArray(data.length), // M
-    new Uint8ClampedArray(data.length), // Y
-    new Uint8ClampedArray(data.length), // K
+    new Uint8ClampedArray(data.length),
+    new Uint8ClampedArray(data.length),
+    new Uint8ClampedArray(data.length),
   ];
 
   for (let i = 0; i < data.length; i += 4) {
@@ -23,44 +23,28 @@ export default async function decomposeCMYK(
     const b = data[i + 2] / 255;
     const a = data[i + 3];
 
-    const cCMY = 1 - r;
-    const mCMY = 1 - g;
-    const yCMY = 1 - b;
+    // Convert to CMY
+    const c = 1 - r;
+    const m = 1 - g;
+    const y = 1 - b;
 
-    let c, m, y, k;
-
-    if (Math.min(cCMY, mCMY, yCMY) === 1) {
-      c = 0;
-      m = 0;
-      y = 0;
-      k = 1;
-    } else {
-      k = Math.min(cCMY, mCMY, yCMY);
-      c = (cCMY - k) / (1 - k);
-      m = (mCMY - k) / (1 - k);
-      y = (yCMY - k) / (1 - k);
-    }
-
+    // Cyan channel
     channels[0][i + 0] = Math.round((1 - c) * 255);
     channels[0][i + 1] = 255;
     channels[0][i + 2] = 255;
     channels[0][i + 3] = a;
 
+    // Magenta channel
     channels[1][i + 0] = 255;
     channels[1][i + 1] = Math.round((1 - m) * 255);
     channels[1][i + 2] = 255;
     channels[1][i + 3] = a;
 
+    // Yellow channel
     channels[2][i + 0] = 255;
     channels[2][i + 1] = 255;
     channels[2][i + 2] = Math.round((1 - y) * 255);
     channels[2][i + 3] = a;
-
-    const kVal = Math.round((1 - k) * 255);
-    channels[3][i + 0] = kVal;
-    channels[3][i + 1] = kVal;
-    channels[3][i + 2] = kVal;
-    channels[3][i + 3] = a;
   }
 
   return Promise.all(

@@ -43,7 +43,7 @@ type Transformation =
       technique: "exclusion" | "average";
     };
 
-type ColorSpectrum = "rgb" | "cmyk";
+type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 
 export interface EventTS {
   createSvg: {

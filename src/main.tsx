@@ -46,6 +46,10 @@ import ZoomOut from "./components/transformations/zoom-out";
 import zoomOut from "./utils/transformations/zoom-out";
 import decomposeRGB from "./utils/decolorization/rgb";
 import decomposeCMYK from "./utils/decolorization/cmyk";
+import decomposeCMY from "./utils/decolorization/cmy";
+import decomposeYUV from "./utils/decolorization/yuv";
+import decomposeHSB from "./utils/decolorization/hsb";
+import decomposeHSL from "./utils/decolorization/hsl";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -202,6 +206,18 @@ listenTS("decomposeImage", async ({ bytes, colorSpectrum }) => {
     case "cmyk": {
       results = await decomposeCMYK(bytes);
     }
+    case "cmy": {
+      results = await decomposeCMY(bytes);
+    }
+    case "yuv": {
+      results = await decomposeYUV(bytes);
+    }
+    case "hsb": {
+      results = await decomposeHSB(bytes);
+    }
+    case "hsl": {
+      results = await decomposeHSL(bytes);
+    }
   }
 
   for (const result of results) {
@@ -321,6 +337,42 @@ export const App = () => {
                 }
               >
                 CMYK
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "cmy",
+                  })
+                }
+              >
+                CMY
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "yuv",
+                  })
+                }
+              >
+                YUV
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "hsb",
+                  })
+                }
+              >
+                HSB
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "hsl",
+                  })
+                }
+              >
+                HSL
               </Button>
             </AccordionContent>
           </AccordionItem>
