@@ -40,6 +40,10 @@ import Reflection from "./components/transformations/reflection";
 import reflection from "./utils/transformations/reflection";
 import translation from "./utils/transformations/translation";
 import Translation from "./components/transformations/translation";
+import zoomIn from "./utils/transformations/zoom-in";
+import ZoomIn from "./components/transformations/zoom-in";
+import ZoomOut from "./components/transformations/zoom-out";
+import zoomOut from "./utils/transformations/zoom-out";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -157,6 +161,22 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
 
       break;
     }
+    case "zoomIn": {
+      const scaleResult = await zoomIn(bytes, t.scale, t.technique);
+      newBytes = scaleResult.newBytes;
+      newWidth = scaleResult.newWidth;
+      newHeight = scaleResult.newHeight;
+
+      break;
+    }
+    case "zoomOut": {
+      const scaleResult = await zoomOut(bytes, t.scale, t.technique);
+      newBytes = scaleResult.newBytes;
+      newWidth = scaleResult.newWidth;
+      newHeight = scaleResult.newHeight;
+
+      break;
+    }
   }
 
   dispatchTS("openImage", {
@@ -250,6 +270,8 @@ export const App = () => {
               <Rotation />
               <Reflection />
               <Translation />
+              <ZoomIn />
+              <ZoomOut />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

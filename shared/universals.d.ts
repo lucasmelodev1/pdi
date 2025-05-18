@@ -31,6 +31,16 @@ type Transformation =
       type: "reflection";
       horizontal: boolean;
       vertical: boolean;
+    }
+  | {
+      type: "zoomIn";
+      scale: number;
+      technique: "interpolation" | "replication";
+    }
+  | {
+      type: "zoomOut";
+      scale: number;
+      technique: "exclusion" | "average";
     };
 
 export interface EventTS {
