@@ -78,10 +78,10 @@ export interface EventTS {
     colorSpectrum: ColorSpectrum;
   };
   pseudocolorization: {
-    style: "heatmap";
+    style: "heatmap" | "falseColor";
   };
   pseudocolorizationImage: {
-    style: "heatmap";
+    style: "heatmap" | "falseColor";
     bytes: Uint8Array;
   };
   invert: {};

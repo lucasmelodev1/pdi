@@ -41,6 +41,7 @@ import decomposeYUV from "./utils/decolorization/yuv";
 import decomposeHSB from "./utils/decolorization/hsb";
 import decomposeHSL from "./utils/decolorization/hsl";
 import heatmapPseudocolorize from "./utils/pseudocolorization/heatmap";
+import falseColorHighlight from "./utils/pseudocolorization/false-color";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -51,7 +52,6 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const pixels = imageData.data;
   const pixels2 = imageData2.data;
 
-  // Do the actual work of inverting the colors.
   for (let i = 0; i < pixels.length; i += 4) {
     switch (operation) {
       case "sum": {
@@ -97,7 +97,6 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
         break;
       }
     }
-    // Don't invert the alpha channel.
   }
 
   const newBytes = await encode(canvas, ctx, imageData);
@@ -193,21 +192,27 @@ listenTS("decomposeImage", async ({ bytes, colorSpectrum }) => {
   switch (colorSpectrum) {
     case "rgb": {
       results = await decomposeRGB(bytes);
+      break;
     }
     case "cmyk": {
       results = await decomposeCMYK(bytes);
+      break;
     }
     case "cmy": {
       results = await decomposeCMY(bytes);
+      break;
     }
     case "yuv": {
       results = await decomposeYUV(bytes);
+      break;
     }
     case "hsb": {
       results = await decomposeHSB(bytes);
+      break;
     }
     case "hsl": {
       results = await decomposeHSL(bytes);
+      break;
     }
   }
 
@@ -221,21 +226,32 @@ listenTS("decomposeImage", async ({ bytes, colorSpectrum }) => {
 });
 
 listenTS("pseudocolorizationImage", async ({ bytes, style }) => {
+  let buffer, width, height;
+
   switch (style) {
     case "heatmap": {
-      const {
-        bytes: newBytes,
-        width,
-        height,
-      } = await heatmapPseudocolorize(bytes);
+      const result = await heatmapPseudocolorize(bytes);
+      buffer = result.bytes;
+      width = result.width;
+      height = result.height;
 
-      dispatchTS("openImage", {
-        buffer: newBytes,
-        width,
-        height,
-      });
+      break;
+    }
+    case "falseColor": {
+      const result = await falseColorHighlight(bytes);
+      buffer = result.bytes;
+      width = result.width;
+      height = result.height;
+
+      break;
     }
   }
+
+  dispatchTS("openImage", {
+    buffer: buffer!,
+    width: width!,
+    height: height!,
+  });
 });
 
 listenTS("invertImage", async ({ bytes }) => {
@@ -332,7 +348,7 @@ export const App = () => {
           </AccordionItem>
           <AccordionItem value="pseudocolorization">
             <AccordionTrigger>Pseudocolorização</AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="grid grid-cols-4 gap-4">
               <Button
                 onClick={() =>
                   dispatchTS("pseudocolorization", {
@@ -341,6 +357,15 @@ export const App = () => {
                 }
               >
                 Mapa de Calor
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("pseudocolorization", {
+                    style: "falseColor",
+                  })
+                }
+              >
+                Realce Por Falsa Cor
               </Button>
             </AccordionContent>
           </AccordionItem>
