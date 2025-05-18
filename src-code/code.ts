@@ -71,6 +71,21 @@ listenTS("transformation", async ({ transformation }) => {
   }
 });
 
+listenTS("decompose", async ({ colorSpectrum }) => {
+  const node = figma.currentPage.selection[0] as GeometryMixin;
+  for (const paint of node.fills as Paint[]) {
+    if (paint.type === "IMAGE") {
+      const image = figma.getImageByHash(paint.imageHash);
+      const bytes = await image.getBytesAsync();
+
+      dispatchTS("decomposeImage", {
+        bytes,
+        colorSpectrum,
+      });
+    }
+  }
+});
+
 listenTS("invert", async (msg) => {
   const node = figma.currentPage.selection[0] as GeometryMixin;
   for (const paint of node.fills as Paint[]) {

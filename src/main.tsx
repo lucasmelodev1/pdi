@@ -44,6 +44,8 @@ import zoomIn from "./utils/transformations/zoom-in";
 import ZoomIn from "./components/transformations/zoom-in";
 import ZoomOut from "./components/transformations/zoom-out";
 import zoomOut from "./utils/transformations/zoom-out";
+import decomposeRGB from "./utils/decolorization/rgb";
+import decomposeCMYK from "./utils/decolorization/cmyk";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -186,6 +188,31 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
   });
 });
 
+listenTS("decomposeImage", async ({ bytes, colorSpectrum }) => {
+  let results: {
+    bytes: Uint8Array;
+    width: number;
+    height: number;
+  }[] = [];
+
+  switch (colorSpectrum) {
+    case "rgb": {
+      results = await decomposeRGB(bytes);
+    }
+    case "cmyk": {
+      results = await decomposeCMYK(bytes);
+    }
+  }
+
+  for (const result of results) {
+    dispatchTS("openImage", {
+      buffer: result.bytes!,
+      width: result.width!,
+      height: result.height!,
+    });
+  }
+});
+
 listenTS("invertImage", async ({ bytes }) => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -272,6 +299,29 @@ export const App = () => {
               <Translation />
               <ZoomIn />
               <ZoomOut />
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="color-decomposition">
+            <AccordionTrigger>Decomposição de Cores</AccordionTrigger>
+            <AccordionContent className="grid grid-cols-4 gap-4">
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "rgb",
+                  })
+                }
+              >
+                RGB
+              </Button>
+              <Button
+                onClick={() =>
+                  dispatchTS("decompose", {
+                    colorSpectrum: "cmyk",
+                  })
+                }
+              >
+                CMYK
+              </Button>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

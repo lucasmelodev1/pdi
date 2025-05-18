@@ -33,7 +33,6 @@ export default async function zoomOut(
       const destIndex = (y * newWidth + x) * 4;
 
       if (method === "exclusion") {
-        // Pick top-left pixel in the scale block
         const srcX = Math.floor(x * scale);
         const srcY = Math.floor(y * scale);
         const srcIndex = (srcY * srcWidth + srcX) * 4;
@@ -43,7 +42,6 @@ export default async function zoomOut(
         destData[destIndex + 2] = srcData[srcIndex + 2]; // B
         destData[destIndex + 3] = srcData[srcIndex + 3]; // A
       } else {
-        // Average all pixels in the block
         const blockSize = scale * scale;
         const sums = [0, 0, 0, 0];
 

@@ -43,6 +43,8 @@ type Transformation =
       technique: "exclusion" | "average";
     };
 
+type ColorSpectrum = "rgb" | "cmyk";
+
 export interface EventTS {
   createSvg: {
     svg: string;
@@ -67,6 +69,13 @@ export interface EventTS {
   transformationImage: {
     transformation: Transformation;
     bytes: Uint8Array;
+  };
+  decompose: {
+    colorSpectrum: ColorSpectrum;
+  };
+  decomposeImage: {
+    bytes: Uint8Array;
+    colorSpectrum: ColorSpectrum;
   };
   invert: {};
   invertImage: {
