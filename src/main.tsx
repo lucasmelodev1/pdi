@@ -36,6 +36,8 @@ import Scale from "./components/transformations/scale";
 import Skew from "./components/transformations/skew";
 import Rotation from "./components/transformations/rotation";
 import rotation from "./utils/transformations/rotation";
+import Reflection from "./components/transformations/reflection";
+import reflection from "./utils/transformations/reflection";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -103,18 +105,14 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   });
 });
 
-listenTS("transformationImage", async ({ transformation, bytes }) => {
+listenTS("transformationImage", async ({ transformation: t, bytes }) => {
   let newBytes: Uint8Array;
   let newWidth: number;
   let newHeight: number;
 
-  switch (transformation.type) {
+  switch (t.type) {
     case "scale": {
-      const scaleResult = await scale(
-        bytes,
-        transformation.x,
-        transformation.y,
-      );
+      const scaleResult = await scale(bytes, t.x, t.y);
       newBytes = scaleResult.newBytes;
       newWidth = scaleResult.newWidth;
       newHeight = scaleResult.newHeight;
@@ -122,7 +120,7 @@ listenTS("transformationImage", async ({ transformation, bytes }) => {
       break;
     }
     case "skew": {
-      const skewResult = await skew(bytes, transformation.x, transformation.y);
+      const skewResult = await skew(bytes, t.x, t.y);
       newBytes = skewResult.newBytes;
       newWidth = skewResult.newWidth;
       newHeight = skewResult.newHeight;
@@ -130,10 +128,22 @@ listenTS("transformationImage", async ({ transformation, bytes }) => {
       break;
     }
     case "rotation": {
-      const rotationResult = await rotation(bytes, transformation.angle);
+      const rotationResult = await rotation(bytes, t.angle);
       newBytes = rotationResult.newBytes;
       newWidth = rotationResult.newWidth;
       newHeight = rotationResult.newHeight;
+
+      break;
+    }
+    case "reflection": {
+      const reflectionResult = await reflection(
+        bytes,
+        t.horizontal,
+        t.vertical,
+      );
+      newBytes = reflectionResult.newBytes;
+      newWidth = reflectionResult.newWidth;
+      newHeight = reflectionResult.newHeight;
 
       break;
     }
@@ -228,6 +238,7 @@ export const App = () => {
               <Scale />
               <Skew />
               <Rotation />
+              <Reflection />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

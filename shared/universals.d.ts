@@ -21,6 +21,11 @@ type Transformation =
   | {
       type: "rotation";
       angle: number;
+    }
+  | {
+      type: "reflection";
+      horizontal: boolean;
+      vertical: boolean;
     };
 
 export interface EventTS {
