@@ -20,16 +20,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./components/ui/accordion";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "./components/ui/dialog";
-import { Label } from "./components/ui/label";
 import scale from "./utils/transformations/scale";
 import skew from "./utils/transformations/skew";
 import Scale from "./components/transformations/scale";
@@ -50,6 +40,7 @@ import decomposeCMY from "./utils/decolorization/cmy";
 import decomposeYUV from "./utils/decolorization/yuv";
 import decomposeHSB from "./utils/decolorization/hsb";
 import decomposeHSL from "./utils/decolorization/hsl";
+import heatmapPseudocolorize from "./utils/pseudocolorization/heatmap";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -229,6 +220,24 @@ listenTS("decomposeImage", async ({ bytes, colorSpectrum }) => {
   }
 });
 
+listenTS("pseudocolorizationImage", async ({ bytes, style }) => {
+  switch (style) {
+    case "heatmap": {
+      const {
+        bytes: newBytes,
+        width,
+        height,
+      } = await heatmapPseudocolorize(bytes);
+
+      dispatchTS("openImage", {
+        buffer: newBytes,
+        width,
+        height,
+      });
+    }
+  }
+});
+
 listenTS("invertImage", async ({ bytes }) => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -319,60 +328,19 @@ export const App = () => {
           </AccordionItem>
           <AccordionItem value="color-decomposition">
             <AccordionTrigger>Decomposição de Cores</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-4">
+            <ColorDecompositionAccordionItems />
+          </AccordionItem>
+          <AccordionItem value="pseudocolorization">
+            <AccordionTrigger>Pseudocolorização</AccordionTrigger>
+            <AccordionContent>
               <Button
                 onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "rgb",
+                  dispatchTS("pseudocolorization", {
+                    style: "heatmap",
                   })
                 }
               >
-                RGB
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "cmyk",
-                  })
-                }
-              >
-                CMYK
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "cmy",
-                  })
-                }
-              >
-                CMY
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "yuv",
-                  })
-                }
-              >
-                YUV
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "hsb",
-                  })
-                }
-              >
-                HSB
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("decompose", {
-                    colorSpectrum: "hsl",
-                  })
-                }
-              >
-                HSL
+                Mapa de Calor
               </Button>
             </AccordionContent>
           </AccordionItem>
@@ -467,6 +435,67 @@ function OperationsAccordionItems() {
         }}
       >
         XOR
+      </Button>
+    </AccordionContent>
+  );
+}
+
+function ColorDecompositionAccordionItems() {
+  return (
+    <AccordionContent className="grid grid-cols-4 gap-4">
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "rgb",
+          })
+        }
+      >
+        RGB
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "cmyk",
+          })
+        }
+      >
+        CMYK
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "cmy",
+          })
+        }
+      >
+        CMY
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "yuv",
+          })
+        }
+      >
+        YUV
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "hsb",
+          })
+        }
+      >
+        HSB
+      </Button>
+      <Button
+        onClick={() =>
+          dispatchTS("decompose", {
+            colorSpectrum: "hsl",
+          })
+        }
+      >
+        HSL
       </Button>
     </AccordionContent>
   );

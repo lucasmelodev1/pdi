@@ -77,6 +77,13 @@ export interface EventTS {
     bytes: Uint8Array;
     colorSpectrum: ColorSpectrum;
   };
+  pseudocolorization: {
+    style: "heatmap";
+  };
+  pseudocolorizationImage: {
+    style: "heatmap";
+    bytes: Uint8Array;
+  };
   invert: {};
   invertImage: {
     bytes: Uint8Array;
