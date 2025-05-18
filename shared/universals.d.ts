@@ -8,8 +8,11 @@ export interface EventTS {
     height: number;
     buffer: ArrayBuffer;
   };
-  sum: {};
-  sumImage: {
+  operation: {
+    operation: "sum" | "subtract" | "multiplication" | "division";
+  };
+  operationImage: {
+    operation: "sum" | "subtract" | "multiplication" | "division";
     bytes: Uint8Array;
     bytes2: Uint8Array;
   };

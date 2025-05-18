@@ -35,7 +35,7 @@ listenTS("openImage", (msg) => {
   figma.currentPage.appendChild(node);
 });
 
-listenTS("sum", async (msg) => {
+listenTS("operation", async ({ operation }) => {
   const node = figma.currentPage.selection[0] as GeometryMixin;
   const node2 = figma.currentPage.selection[1] as GeometryMixin;
   for (let i = 0; i < (node.fills as Paint[]).length; i++) {
@@ -47,7 +47,8 @@ listenTS("sum", async (msg) => {
       const bytes = await image.getBytesAsync();
       const bytes2 = await image2.getBytesAsync();
 
-      dispatchTS("sumImage", {
+      dispatchTS("operationImage", {
+        operation,
         bytes,
         bytes2,
       });
