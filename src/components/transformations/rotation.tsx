@@ -13,40 +13,30 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 
-export default function Scale() {
-  const [x, setX] = useState(1.0);
-  const [y, setY] = useState(1.0);
+export default function Rotation() {
+  const [angle, setAngle] = useState(1.0);
 
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Escala</Button>
+        <Button className="w-full">Rotação</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Escala</DialogTitle>
+          <DialogTitle>Rotação</DialogTitle>
           <DialogDescription>
-            Escala a imagem utilizando Nearest-neighbor para os valores
-            indicados de X e Y
+            Rotaciona a imagem de acordo com o grau escolhido
           </DialogDescription>
         </DialogHeader>
-        <div className="grid grid-cols-2 gap-4 py-4">
+        <div className="mx-auto">
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="email">X</Label>
             <Input
               type="number"
-              value={x}
-              max={10}
-              onChange={(e) => setX(Number(e.target.value))}
-            />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="email">Y</Label>
-            <Input
-              type="number"
-              value={y}
-              max={10}
-              onChange={(e) => setY(Number(e.target.value))}
+              value={angle}
+              max={360}
+              min={-360}
+              onChange={(e) => setAngle(Number(e.target.value))}
             />
           </div>
         </div>
@@ -55,9 +45,8 @@ export default function Scale() {
             onClick={() => {
               dispatchTS("transformation", {
                 transformation: {
-                  type: "scale",
-                  x,
-                  y,
+                  type: "rotation",
+                  angle,
                 },
               });
             }}

@@ -34,6 +34,8 @@ import scale from "./utils/transformations/scale";
 import skew from "./utils/transformations/skew";
 import Scale from "./components/transformations/scale";
 import Skew from "./components/transformations/skew";
+import Rotation from "./components/transformations/rotation";
+import rotation from "./utils/transformations/rotation";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -102,36 +104,46 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
 });
 
 listenTS("transformationImage", async ({ transformation, bytes }) => {
+  let newBytes: Uint8Array;
+  let newWidth: number;
+  let newHeight: number;
+
   switch (transformation.type) {
     case "scale": {
-      const { newBytes, newWidth, newHeight } = await scale(
+      const scaleResult = await scale(
         bytes,
         transformation.x,
         transformation.y,
       );
+      newBytes = scaleResult.newBytes;
+      newWidth = scaleResult.newWidth;
+      newHeight = scaleResult.newHeight;
 
-      dispatchTS("openImage", {
-        buffer: newBytes,
-        width: newWidth,
-        height: newHeight,
-      });
       break;
     }
     case "skew": {
-      const { newBytes, newWidth, newHeight } = await skew(
-        bytes,
-        transformation.x,
-        transformation.y,
-      );
+      const skewResult = await skew(bytes, transformation.x, transformation.y);
+      newBytes = skewResult.newBytes;
+      newWidth = skewResult.newWidth;
+      newHeight = skewResult.newHeight;
 
-      dispatchTS("openImage", {
-        buffer: newBytes,
-        width: newWidth,
-        height: newHeight,
-      });
+      break;
+    }
+    case "rotation": {
+      const rotationResult = await rotation(bytes, transformation.angle);
+      newBytes = rotationResult.newBytes;
+      newWidth = rotationResult.newWidth;
+      newHeight = rotationResult.newHeight;
+
       break;
     }
   }
+
+  dispatchTS("openImage", {
+    buffer: newBytes!,
+    width: newWidth!,
+    height: newHeight!,
+  });
 });
 
 listenTS("invertImage", async ({ bytes }) => {
@@ -212,9 +224,10 @@ export const App = () => {
           </AccordionItem>
           <AccordionItem value="transformation">
             <AccordionTrigger>Transformações</AccordionTrigger>
-            <AccordionContent>
+            <AccordionContent className="grid grid-cols-4 gap-4">
               <Scale />
               <Skew />
+              <Rotation />
             </AccordionContent>
           </AccordionItem>
         </Accordion>

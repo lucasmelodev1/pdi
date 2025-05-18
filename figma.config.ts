@@ -2,14 +2,12 @@ import type { FigmaConfig, PluginManifest } from "vite-figma-plugin/lib/types";
 import { version } from "./package.json";
 
 export const manifest: PluginManifest = {
-  name: "Naruto SVG Creator", 
-  id: "amanvarshney01.naruto-svg-creator", 
+  name: "PDI 2025",
+  id: "pdi-2025-lucasmelodev1",
   api: "1.0.0",
   main: "code.js",
   ui: "index.html",
-  editorType: [
-    "figma", 
-  ],
+  editorType: ["figma"],
   documentAccess: "dynamic-page",
   networkAccess: {
     allowedDomains: ["*"],

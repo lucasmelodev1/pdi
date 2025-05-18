@@ -20,7 +20,7 @@ export default function Skew() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button>Cisalhamento</Button>
+        <Button className="w-full">Cisalhamento</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

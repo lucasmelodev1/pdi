@@ -17,6 +17,10 @@ type Transformation =
       type: "skew";
       x: number;
       y: number;
+    }
+  | {
+      type: "rotation";
+      angle: number;
     };
 
 export interface EventTS {
