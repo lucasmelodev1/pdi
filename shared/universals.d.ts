@@ -1,3 +1,24 @@
+type Operation =
+  | "sum"
+  | "subtract"
+  | "multiplication"
+  | "division"
+  | "and"
+  | "or"
+  | "xor";
+
+type Transformation =
+  | {
+      type: "scale";
+      x: number;
+      y: number;
+    }
+  | {
+      type: "skew";
+      x: number;
+      y: number;
+    };
+
 export interface EventTS {
   createSvg: {
     svg: string;
@@ -9,26 +30,19 @@ export interface EventTS {
     buffer: ArrayBuffer;
   };
   operation: {
-    operation:
-      | "sum"
-      | "subtract"
-      | "multiplication"
-      | "division"
-      | "and"
-      | "or"
-      | "xor";
+    operation: Operation;
   };
   operationImage: {
-    operation:
-      | "sum"
-      | "subtract"
-      | "multiplication"
-      | "division"
-      | "and"
-      | "or"
-      | "xor";
+    operation: Operation;
     bytes: Uint8Array;
     bytes2: Uint8Array;
+  };
+  transformation: {
+    transformation: Transformation;
+  };
+  transformationImage: {
+    transformation: Transformation;
+    bytes: Uint8Array;
   };
   invert: {};
   invertImage: {

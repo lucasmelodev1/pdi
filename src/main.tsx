@@ -20,6 +20,17 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "./components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/ui/dialog";
+import { Label } from "./components/ui/label";
+import scale from "./utils/transformations/scale";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -85,6 +96,24 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
     height: imageData.height,
     width: imageData.width,
   });
+});
+
+listenTS("transformationImage", async ({ transformation, bytes }) => {
+  switch (transformation.type) {
+    case "scale": {
+      const { newBytes, newWidth, newHeight } = await scale(
+        bytes,
+        transformation.x,
+        transformation.y,
+      );
+
+      dispatchTS("openImage", {
+        buffer: newBytes,
+        width: newWidth,
+        height: newHeight,
+      });
+    }
+  }
 });
 
 listenTS("invertImage", async ({ bytes }) => {
@@ -227,6 +256,12 @@ export const App = () => {
               </Button>
             </AccordionContent>
           </AccordionItem>
+          <AccordionItem value="transformation">
+            <AccordionTrigger>Transformações</AccordionTrigger>
+            <AccordionContent>
+              <Scale />
+            </AccordionContent>
+          </AccordionItem>
         </Accordion>
         <Input
           type="file"
@@ -252,3 +287,60 @@ export const App = () => {
     </>
   );
 };
+
+function Scale() {
+  const [x, setX] = useState(1.0);
+  const [y, setY] = useState(1.0);
+
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button>Escala</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Escala</DialogTitle>
+          <DialogDescription>
+            Escala a imagem utilizando Nearest-neighbor para os valores
+            indicados de X e Y
+          </DialogDescription>
+        </DialogHeader>
+        <div className="grid grid-cols-2 gap-4 py-4">
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="email">X</Label>
+            <Input
+              type="number"
+              value={x}
+              max={10}
+              onChange={(e) => setX(Number(e.target.value))}
+            />
+          </div>
+          <div className="grid w-full max-w-sm items-center gap-1.5">
+            <Label htmlFor="email">Y</Label>
+            <Input
+              type="number"
+              value={y}
+              max={10}
+              onChange={(e) => setY(Number(e.target.value))}
+            />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button
+            onClick={() => {
+              dispatchTS("transformation", {
+                transformation: {
+                  type: "scale",
+                  x,
+                  y,
+                },
+              });
+            }}
+          >
+            Confirmar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}

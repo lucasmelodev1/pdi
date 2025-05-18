@@ -56,6 +56,21 @@ listenTS("operation", async ({ operation }) => {
   }
 });
 
+listenTS("transformation", async ({ transformation }) => {
+  const node = figma.currentPage.selection[0] as GeometryMixin;
+  for (const paint of node.fills as Paint[]) {
+    if (paint.type === "IMAGE") {
+      const image = figma.getImageByHash(paint.imageHash);
+      const bytes = await image.getBytesAsync();
+
+      dispatchTS("transformationImage", {
+        bytes,
+        transformation,
+      });
+    }
+  }
+});
+
 listenTS("invert", async (msg) => {
   const node = figma.currentPage.selection[0] as GeometryMixin;
   for (const paint of node.fills as Paint[]) {
