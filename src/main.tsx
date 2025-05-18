@@ -31,6 +31,9 @@ import {
 } from "./components/ui/dialog";
 import { Label } from "./components/ui/label";
 import scale from "./utils/transformations/scale";
+import skew from "./utils/transformations/skew";
+import Scale from "./components/transformations/scale";
+import Skew from "./components/transformations/skew";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -112,6 +115,21 @@ listenTS("transformationImage", async ({ transformation, bytes }) => {
         width: newWidth,
         height: newHeight,
       });
+      break;
+    }
+    case "skew": {
+      const { newBytes, newWidth, newHeight } = await skew(
+        bytes,
+        transformation.x,
+        transformation.y,
+      );
+
+      dispatchTS("openImage", {
+        buffer: newBytes,
+        width: newWidth,
+        height: newHeight,
+      });
+      break;
     }
   }
 });
@@ -190,76 +208,13 @@ export const App = () => {
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Operações</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-4">
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "sum",
-                  });
-                }}
-              >
-                Soma
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "subtract",
-                  });
-                }}
-              >
-                Subtração
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "multiplication",
-                  });
-                }}
-              >
-                Multiplicação
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "division",
-                  });
-                }}
-              >
-                Divisão
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "and",
-                  });
-                }}
-              >
-                AND
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "or",
-                  });
-                }}
-              >
-                OR
-              </Button>
-              <Button
-                onClick={() => {
-                  dispatchTS("operation", {
-                    operation: "xor",
-                  });
-                }}
-              >
-                XOR
-              </Button>
-            </AccordionContent>
+            <OperationsAccordionItems />
           </AccordionItem>
           <AccordionItem value="transformation">
             <AccordionTrigger>Transformações</AccordionTrigger>
             <AccordionContent>
               <Scale />
+              <Skew />
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -288,59 +243,72 @@ export const App = () => {
   );
 };
 
-function Scale() {
-  const [x, setX] = useState(1.0);
-  const [y, setY] = useState(1.0);
-
+function OperationsAccordionItems() {
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button>Escala</Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Escala</DialogTitle>
-          <DialogDescription>
-            Escala a imagem utilizando Nearest-neighbor para os valores
-            indicados de X e Y
-          </DialogDescription>
-        </DialogHeader>
-        <div className="grid grid-cols-2 gap-4 py-4">
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="email">X</Label>
-            <Input
-              type="number"
-              value={x}
-              max={10}
-              onChange={(e) => setX(Number(e.target.value))}
-            />
-          </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label htmlFor="email">Y</Label>
-            <Input
-              type="number"
-              value={y}
-              max={10}
-              onChange={(e) => setY(Number(e.target.value))}
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <Button
-            onClick={() => {
-              dispatchTS("transformation", {
-                transformation: {
-                  type: "scale",
-                  x,
-                  y,
-                },
-              });
-            }}
-          >
-            Confirmar
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <AccordionContent className="grid grid-cols-4 gap-4">
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "sum",
+          });
+        }}
+      >
+        Soma
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "subtract",
+          });
+        }}
+      >
+        Subtração
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "multiplication",
+          });
+        }}
+      >
+        Multiplicação
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "division",
+          });
+        }}
+      >
+        Divisão
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "and",
+          });
+        }}
+      >
+        AND
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "or",
+          });
+        }}
+      >
+        OR
+      </Button>
+      <Button
+        onClick={() => {
+          dispatchTS("operation", {
+            operation: "xor",
+          });
+        }}
+      >
+        XOR
+      </Button>
+    </AccordionContent>
   );
 }
