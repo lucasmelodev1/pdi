@@ -9,10 +9,24 @@ export interface EventTS {
     buffer: ArrayBuffer;
   };
   operation: {
-    operation: "sum" | "subtract" | "multiplication" | "division";
+    operation:
+      | "sum"
+      | "subtract"
+      | "multiplication"
+      | "division"
+      | "and"
+      | "or"
+      | "xor";
   };
   operationImage: {
-    operation: "sum" | "subtract" | "multiplication" | "division";
+    operation:
+      | "sum"
+      | "subtract"
+      | "multiplication"
+      | "division"
+      | "and"
+      | "or"
+      | "xor";
     bytes: Uint8Array;
     bytes2: Uint8Array;
   };

@@ -57,6 +57,24 @@ listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
         pixels[i + 2] = pixels[i + 2] * pixels2[i + 2];
         break;
       }
+      case "and": {
+        pixels[i + 0] = pixels[i + 0] & pixels2[i + 0];
+        pixels[i + 1] = pixels[i + 1] & pixels2[i + 1];
+        pixels[i + 2] = pixels[i + 2] & pixels2[i + 2];
+        break;
+      }
+      case "or": {
+        pixels[i + 0] = pixels[i + 0] | pixels2[i + 0];
+        pixels[i + 1] = pixels[i + 1] | pixels2[i + 1];
+        pixels[i + 2] = pixels[i + 2] | pixels2[i + 2];
+        break;
+      }
+      case "xor": {
+        pixels[i + 0] = pixels[i + 0] ^ pixels2[i + 0];
+        pixels[i + 1] = pixels[i + 1] ^ pixels2[i + 1];
+        pixels[i + 2] = pixels[i + 2] ^ pixels2[i + 2];
+        break;
+      }
     }
     // Don't invert the alpha channel.
   }
@@ -179,6 +197,33 @@ export const App = () => {
                 }}
               >
                 Divisão
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatchTS("operation", {
+                    operation: "and",
+                  });
+                }}
+              >
+                AND
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatchTS("operation", {
+                    operation: "or",
+                  });
+                }}
+              >
+                OR
+              </Button>
+              <Button
+                onClick={() => {
+                  dispatchTS("operation", {
+                    operation: "xor",
+                  });
+                }}
+              >
+                XOR
               </Button>
             </AccordionContent>
           </AccordionItem>
