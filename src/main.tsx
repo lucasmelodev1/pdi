@@ -47,6 +47,7 @@ import {
   DivideIcon,
   MinusIcon,
   PlusIcon,
+  Square,
   Tally2Icon,
   XIcon,
 } from "lucide-react";
@@ -468,7 +469,7 @@ function OperationsAccordionItems() {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-squares-intersect-icon lucide-squares-intersect"
+          className="lucide lucide-squares-intersect-icon lucide-squares-intersect"
         >
           <path d="M10 22a2 2 0 0 1-2-2" />
           <path d="M14 2a2 2 0 0 1 2 2" />
@@ -502,7 +503,7 @@ function OperationsAccordionItems() {
           stroke-width="2"
           stroke-linecap="round"
           stroke-linejoin="round"
-          class="lucide lucide-squares-unite-icon lucide-squares-unite"
+          className="lucide lucide-squares-unite-icon lucide-squares-unite"
         >
           <path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3a1 1 0 0 0-1-1z" />
         </svg>
@@ -541,39 +542,64 @@ function ColorDecompositionAccordionItems() {
   return (
     <AccordionContent className="grid grid-cols-4 gap-4">
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() =>
           dispatchTS("decompose", {
             colorSpectrum: "rgb",
           })
         }
       >
+        <div className="flex items-center gap-2">
+          <Square className="size-5 fill-red-500" />
+          <Square className="size-5 fill-green-500" />
+          <Square className="size-5 fill-blue-500" />
+        </div>
         RGB
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() =>
           dispatchTS("decompose", {
             colorSpectrum: "cmyk",
           })
         }
       >
+        <div className="flex items-center gap-2">
+          <Square className="size-5 fill-cyan-500" />
+          <Square className="size-5 fill-pink-600" />
+          <Square className="size-5 fill-yellow-500" />
+          <Square className="size-5 fill-gray-500" />
+        </div>
         CMYK
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() =>
           dispatchTS("decompose", {
             colorSpectrum: "cmy",
           })
         }
       >
+        <div className="flex items-center gap-2">
+          <Square className="size-5 fill-cyan-500" />
+          <Square className="size-5 fill-pink-600" />
+          <Square className="size-5 fill-yellow-500" />
+        </div>
         CMY
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() =>
           dispatchTS("decompose", {
             colorSpectrum: "yuv",
           })
         }
       >
+        <div className="flex items-center gap-2">
+          <Square className="size-5 fill-blue-500" />
+          <Square className="size-5 fill-orange-600" />
+          <Square className="size-5 fill-gray-500" />
+        </div>
         YUV
       </Button>
       <Button
