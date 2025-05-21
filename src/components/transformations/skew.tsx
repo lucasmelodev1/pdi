@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
+import imgSrc from "./img/Cisalhamento.png";
 
 export default function Skew() {
   const [x, setX] = useState(0);
@@ -20,7 +21,10 @@ export default function Skew() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Cisalhamento</Button>
+        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
+          <img src={imgSrc} alt="Escala" className="" />
+          Cisalhamento
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

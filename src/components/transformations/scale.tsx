@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
+import imgSrc from "./img/Escala.svg";
 
 export default function Scale() {
   const [x, setX] = useState(1.0);
@@ -20,7 +21,10 @@ export default function Scale() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Escala</Button>
+        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
+          <img src={imgSrc} alt="Escala" className="h-12" />
+          Escala
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

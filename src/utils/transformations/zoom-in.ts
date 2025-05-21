@@ -11,83 +11,85 @@ export default async function zoomIn(
   newHeight: number;
 }> {
   if (scale < 1) {
-    scale = 1 / scale;
+    scale = 1 / scale; // Ensure scale is always >= 1 for zoom-in
   }
 
-  const originalCanvas = document.createElement("canvas");
-  const originalCtx = originalCanvas.getContext("2d")!;
-  const imageData = await decode(originalCanvas, originalCtx, bytes);
+  const sourceCanvas = document.createElement("canvas");
+  const sourceCtx = sourceCanvas.getContext("2d")!;
+  const sourceImageData = await decode(sourceCanvas, sourceCtx, bytes);
 
-  const srcData = imageData.data;
-  const srcWidth = imageData.width;
-  const srcHeight = imageData.height;
+  const sourcePixels = sourceImageData.data;
+  const sourceWidth = sourceImageData.width;
+  const sourceHeight = sourceImageData.height;
 
-  const newWidth = Math.round(srcWidth * scale);
-  const newHeight = Math.round(srcHeight * scale);
+  const zoomedWidth = Math.round(sourceWidth * scale);
+  const zoomedHeight = Math.round(sourceHeight * scale);
 
-  const newCanvas = document.createElement("canvas");
-  newCanvas.width = newWidth;
-  newCanvas.height = newHeight;
-  const newCtx = newCanvas.getContext("2d")!;
-  const newImageData = newCtx.createImageData(newWidth, newHeight);
-  const destData = newImageData.data;
+  const zoomedCanvas = document.createElement("canvas");
+  zoomedCanvas.width = zoomedWidth;
+  zoomedCanvas.height = zoomedHeight;
+  const zoomedCtx = zoomedCanvas.getContext("2d")!;
+  const zoomedImageData = zoomedCtx.createImageData(zoomedWidth, zoomedHeight);
+  const zoomedPixels = zoomedImageData.data;
 
   if (method === "replication") {
-    for (let y = 0; y < newHeight; y++) {
-      for (let x = 0; x < newWidth; x++) {
-        const srcX = Math.floor(x / scale);
-        const srcY = Math.floor(y / scale);
+    for (let y = 0; y < zoomedHeight; y++) {
+      for (let x = 0; x < zoomedWidth; x++) {
+        const nearestX = Math.floor(x / scale);
+        const nearestY = Math.floor(y / scale);
 
-        const srcIndex = (srcY * srcWidth + srcX) * 4;
-        const destIndex = (y * newWidth + x) * 4;
+        const sourceIndex = (nearestY * sourceWidth + nearestX) * 4;
+        const destIndex = (y * zoomedWidth + x) * 4;
 
-        destData[destIndex + 0] = srcData[srcIndex + 0];
-        destData[destIndex + 1] = srcData[srcIndex + 1];
-        destData[destIndex + 2] = srcData[srcIndex + 2];
-        destData[destIndex + 3] = srcData[srcIndex + 3];
+        zoomedPixels[destIndex + 0] = sourcePixels[sourceIndex + 0]; // R
+        zoomedPixels[destIndex + 1] = sourcePixels[sourceIndex + 1]; // G
+        zoomedPixels[destIndex + 2] = sourcePixels[sourceIndex + 2]; // B
+        zoomedPixels[destIndex + 3] = sourcePixels[sourceIndex + 3]; // A
       }
     }
   } else {
-    for (let y = 0; y < newHeight; y++) {
-      for (let x = 0; x < newWidth; x++) {
-        const gx = x / scale;
-        const gy = y / scale;
+    for (let y = 0; y < zoomedHeight; y++) {
+      for (let x = 0; x < zoomedWidth; x++) {
+        const srcX = x / scale;
+        const srcY = y / scale;
 
-        const x0 = Math.floor(gx);
-        const y0 = Math.floor(gy);
-        const x1 = Math.min(x0 + 1, srcWidth - 1);
-        const y1 = Math.min(y0 + 1, srcHeight - 1);
+        const x0 = Math.floor(srcX);
+        const y0 = Math.floor(srcY);
+        const x1 = Math.min(x0 + 1, sourceWidth - 1);
+        const y1 = Math.min(y0 + 1, sourceHeight - 1);
 
-        const dx = gx - x0;
-        const dy = gy - y0;
+        const dx = srcX - x0;
+        const dy = srcY - y0;
 
-        const i00 = (y0 * srcWidth + x0) * 4;
-        const i10 = (y0 * srcWidth + x1) * 4;
-        const i01 = (y1 * srcWidth + x0) * 4;
-        const i11 = (y1 * srcWidth + x1) * 4;
+        const i00 = (y0 * sourceWidth + x0) * 4;
+        const i10 = (y0 * sourceWidth + x1) * 4;
+        const i01 = (y1 * sourceWidth + x0) * 4;
+        const i11 = (y1 * sourceWidth + x1) * 4;
 
-        const destIndex = (y * newWidth + x) * 4;
+        const destIndex = (y * zoomedWidth + x) * 4;
 
-        for (let c = 0; c < 4; c++) {
-          const v00 = srcData[i00 + c];
-          const v10 = srcData[i10 + c];
-          const v01 = srcData[i01 + c];
-          const v11 = srcData[i11 + c];
+        for (let channel = 0; channel < 4; channel++) {
+          const topLeft = sourcePixels[i00 + channel];
+          const topRight = sourcePixels[i10 + channel];
+          const bottomLeft = sourcePixels[i01 + channel];
+          const bottomRight = sourcePixels[i11 + channel];
 
-          const v0 = v00 * (1 - dx) + v10 * dx;
-          const v1 = v01 * (1 - dx) + v11 * dx;
-          const v = v0 * (1 - dy) + v1 * dy;
+          const topInterp = topLeft * (1 - dx) + topRight * dx;
+          const bottomInterp = bottomLeft * (1 - dx) + bottomRight * dx;
+          const finalValue = topInterp * (1 - dy) + bottomInterp * dy;
 
-          destData[destIndex + c] = Math.round(v);
+          zoomedPixels[destIndex + channel] = Math.round(finalValue);
         }
       }
     }
   }
 
-  newCtx.putImageData(newImageData, 0, 0);
+  // Write result to canvas
+  zoomedCtx.putImageData(zoomedImageData, 0, 0);
+
   return {
-    newBytes: await encode(newCanvas, newCtx, newImageData),
-    newWidth,
-    newHeight,
+    newBytes: await encode(zoomedCanvas, zoomedCtx, zoomedImageData),
+    newWidth: zoomedWidth,
+    newHeight: zoomedHeight,
   };
 }

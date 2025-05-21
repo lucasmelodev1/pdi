@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import { Switch } from "../ui/switch";
+import imgSrc from "./img/Reflexao.svg";
 
 export default function Reflection() {
   const [x, setX] = useState(false);
@@ -21,7 +22,10 @@ export default function Reflection() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Reflexão</Button>
+        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
+          <img src={imgSrc} alt="Escala" className="" />
+          Reflexão
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
