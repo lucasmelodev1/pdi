@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { ShrinkIcon, ZoomOutIcon } from "lucide-react";
 
 export default function ZoomOut() {
   const [zoom, setZoom] = useState(1.0);
@@ -23,7 +24,10 @@ export default function ZoomOut() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Zoom Out</Button>
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <ZoomOutIcon />
+          Zoom Out
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -12,6 +12,7 @@ import { Button } from "../ui/button";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
+import { MoveIcon } from "lucide-react";
 
 export default function Translation() {
   const [x, setX] = useState(0);
@@ -20,7 +21,10 @@ export default function Translation() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Translação</Button>
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <MoveIcon />
+          Translação
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

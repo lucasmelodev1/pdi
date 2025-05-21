@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { ExpandIcon, ZoomInIcon } from "lucide-react";
 
 export default function ZoomIn() {
   const [zoom, setZoom] = useState(1.0);
@@ -23,7 +24,10 @@ export default function ZoomIn() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="w-full">Zoom In</Button>
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <ZoomInIcon />
+          Zoom In
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

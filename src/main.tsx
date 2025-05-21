@@ -42,6 +42,14 @@ import decomposeHSB from "./utils/decolorization/hsb";
 import decomposeHSL from "./utils/decolorization/hsl";
 import heatmapPseudocolorize from "./utils/pseudocolorization/heatmap";
 import falseColorHighlight from "./utils/pseudocolorization/false-color";
+import {
+  AmpersandIcon,
+  DivideIcon,
+  MinusIcon,
+  PlusIcon,
+  Tally2Icon,
+  XIcon,
+} from "lucide-react";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -399,66 +407,130 @@ function OperationsAccordionItems() {
   return (
     <AccordionContent className="grid grid-cols-4 gap-4">
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "sum",
           });
         }}
       >
+        <PlusIcon />
         Soma
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "subtract",
           });
         }}
       >
+        <MinusIcon />
         Subtração
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "multiplication",
           });
         }}
       >
+        <XIcon />
         Multiplicação
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "division",
           });
         }}
       >
+        <DivideIcon />
         Divisão
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "and",
           });
         }}
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-squares-intersect-icon lucide-squares-intersect"
+        >
+          <path d="M10 22a2 2 0 0 1-2-2" />
+          <path d="M14 2a2 2 0 0 1 2 2" />
+          <path d="M16 22h-2" />
+          <path d="M2 10V8" />
+          <path d="M2 4a2 2 0 0 1 2-2" />
+          <path d="M20 8a2 2 0 0 1 2 2" />
+          <path d="M22 14v2" />
+          <path d="M22 20a2 2 0 0 1-2 2" />
+          <path d="M4 16a2 2 0 0 1-2-2" />
+          <path d="M8 10a2 2 0 0 1 2-2h5a1 1 0 0 1 1 1v5a2 2 0 0 1-2 2H9a1 1 0 0 1-1-1z" />
+          <path d="M8 2h2" />
+        </svg>
         AND
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "or",
           });
         }}
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="lucide lucide-squares-unite-icon lucide-squares-unite"
+        >
+          <path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3a1 1 0 0 0-1-1z" />
+        </svg>
         OR
       </Button>
       <Button
+        className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
           dispatchTS("operation", {
             operation: "xor",
           });
         }}
       >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          className="lucide lucide-squares-exclude-icon lucide-squares-exclude"
+        >
+          <path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0" />
+          <path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2" />
+        </svg>
         XOR
       </Button>
     </AccordionContent>

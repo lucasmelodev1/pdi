@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import imgSrc from "./img/Rotacao.png";
+import { RefreshCwIcon } from "lucide-react";
 
 export default function Rotation() {
   const [angle, setAngle] = useState(1.0);
@@ -20,8 +21,8 @@ export default function Rotation() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
-          <img src={imgSrc} alt="Escala" className="" />
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <RefreshCwIcon />
           Rotação
         </Button>
       </DialogTrigger>

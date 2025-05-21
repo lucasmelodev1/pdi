@@ -14,6 +14,7 @@ import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import { Switch } from "../ui/switch";
 import imgSrc from "./img/Reflexao.svg";
+import { FlipHorizontal2Icon } from "lucide-react";
 
 export default function Reflection() {
   const [x, setX] = useState(false);
@@ -22,8 +23,8 @@ export default function Reflection() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
-          <img src={imgSrc} alt="Escala" className="" />
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <FlipHorizontal2Icon />
           Reflexão
         </Button>
       </DialogTrigger>

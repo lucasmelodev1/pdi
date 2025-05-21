@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import imgSrc from "./img/Escala.svg";
+import { ScalingIcon } from "lucide-react";
 
 export default function Scale() {
   const [x, setX] = useState(1.0);
@@ -21,8 +22,8 @@ export default function Scale() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
-          <img src={imgSrc} alt="Escala" className="h-12" />
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          <ScalingIcon />
           Escala
         </Button>
       </DialogTrigger>

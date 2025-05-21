@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { dispatchTS } from "@/utils/utils";
 import imgSrc from "./img/Cisalhamento.png";
+import { SquareIcon } from "lucide-react";
 
 export default function Skew() {
   const [x, setX] = useState(0);
@@ -21,8 +22,9 @@ export default function Skew() {
   return (
     <Dialog>
       <DialogTrigger>
-        <Button className="flex h-full max-h-24 w-full flex-col items-center gap-2">
-          <img src={imgSrc} alt="Escala" className="" />
+        <Button className="flex h-24 w-full flex-col items-center gap-2">
+          {/* <img src={imgSrc} alt="Escala" className="" /> */}
+          <SquareIcon style={{ transform: `skew(20deg, 0)` }} />
           Cisalhamento
         </Button>
       </DialogTrigger>
