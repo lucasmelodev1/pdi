@@ -332,7 +332,7 @@ export const App = () => {
 
   return (
     <>
-      <div className="flex h-full w-full flex-col items-center gap-4 px-8 py-10">
+      <div className="flex h-full w-full flex-col items-center gap-4 overflow-y-scroll px-8 py-10">
         <h1 className="text-xl font-medium">PDI 2025</h1>
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
