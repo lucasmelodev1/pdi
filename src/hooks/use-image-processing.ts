@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { listenTS, dispatchTS } from "@/utils/utils";
-
 import scale from "@/utils/transformations/scale";
 import skew from "@/utils/transformations/skew";
 import rotation from "@/utils/transformations/rotation";
@@ -24,6 +23,14 @@ import encode from "@/utils/encode";
 import type { Transformation } from "../../shared/universals";
 import invertColors from "@/utils/transformations/invert";
 import applyNonLinear from "@/utils/transformations/non-linear";
+import {
+  applySpatialFilter,
+  maxProcessor,
+  meanProcessor,
+  medianProcessor,
+  minProcessor,
+  modeProcessor,
+} from "@/utils/transformations/spatial-filter";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -40,6 +47,11 @@ const transformationHandlers = {
   "sqrt": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'sqrt'),
   "exp": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'exp'),
   "square": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'square'),
+  "mean": (t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, (t as any).kernelSize, meanProcessor),
+  "median": (t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, (t as any).kernelSize, medianProcessor),
+  "max": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, maxProcessor),
+  "min": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, minProcessor),
+  "mode": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, modeProcessor),
 };
 
 const decompositionHandlers = {

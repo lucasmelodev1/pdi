@@ -33,6 +33,10 @@ import SqrtTransform from "@/components/transformations/sqrt-transform";
 import SquareTransform from "./components/transformations/square-transform";
 import LogTransform from "./components/transformations/log-transform";
 import ExpTransform from "./components/transformations/exp-transform";
+import MeanFilter from "@/components/transformations/mean-filter";
+import MedianFilter from "@/components/transformations/median-filter";
+import MaxFilter from "@/components/transformations/max-filter";
+import MinFilter from "@/components/transformations/min-filter";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -107,6 +111,10 @@ export const App = () => {
               <SqrtTransform />
               <ExpTransform />
               <SquareTransform />
+              <MeanFilter />
+              <MedianFilter />
+              <MaxFilter />
+              <MinFilter />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">

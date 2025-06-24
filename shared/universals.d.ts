@@ -58,7 +58,19 @@ type Transformation =
       type: "exp";
     } | {
       type: "square";
-    };
+    } | {
+      type: "mean";
+      kernelSize: 3 | 5;
+    } | {
+      type: "median";
+      kernelSize: 3 | 5;
+    } | {
+      type: "max";
+    } | {
+      type: "min";
+    } | {
+      type: "mode";
+    }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 
