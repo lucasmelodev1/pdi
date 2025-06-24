@@ -3,9 +3,9 @@ import encode from "../encode";
 
 export default async function falseColorOverlayHighlight(
   bytes: Uint8Array,
-  highlightColor: [number, number, number] = [255, 0, 255], // magenta
-  threshold: number = 1,
-  strength: number = 0.2,
+  highlightColor: [number, number, number] = [0, 255, 255], // magenta
+  threshold: number = 0.3,
+  strength: number = 0.8,
 ): Promise<{ bytes: Uint8Array; width: number; height: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -21,9 +21,9 @@ export default async function falseColorOverlayHighlight(
     const b = data[i + 2];
     const a = data[i + 3];
 
-    const redRatio = g === 0 ? 999 : r / g;
+    const redRatio = r === 0 ? 999 : g / b;
 
-    const isTarget = redRatio > threshold && r > 100;
+    const isTarget = redRatio > threshold && g > 100;
 
     if (isTarget) {
       // Blend with highlight color

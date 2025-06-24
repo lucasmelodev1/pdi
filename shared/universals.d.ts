@@ -41,6 +41,9 @@ type Transformation =
       type: "zoomOut";
       scale: number;
       technique: "exclusion" | "average";
+    } | {
+      type: "gammaCorrection";
+      gamma: number;
     };
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";

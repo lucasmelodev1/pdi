@@ -51,6 +51,8 @@ import {
   Tally2Icon,
   XIcon,
 } from "lucide-react";
+import GammaCorrection from "./components/transformations/gamma-correction";
+import gammaCorrection from "@/utils/transformations/gamma-correction";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -179,6 +181,14 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
       newBytes = scaleResult.newBytes;
       newWidth = scaleResult.newWidth;
       newHeight = scaleResult.newHeight;
+
+      break;
+    }
+    case "gammaCorrection": {
+      const gammaResult = await gammaCorrection(bytes, t.gamma);
+      newBytes = gammaResult.newBytes;
+      newWidth = gammaResult.newWidth;
+      newHeight = gammaResult.newHeight;
 
       break;
     }
@@ -349,6 +359,7 @@ export const App = () => {
               <Translation />
               <ZoomIn />
               <ZoomOut />
+              <GammaCorrection />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">
