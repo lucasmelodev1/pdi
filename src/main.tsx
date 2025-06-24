@@ -53,6 +53,8 @@ import {
 } from "lucide-react";
 import GammaCorrection from "./components/transformations/gamma-correction";
 import gammaCorrection from "@/utils/transformations/gamma-correction";
+import histogramEqualization from "@/utils/transformations/histogram-equalization";
+import HistogramEqualization from "@/components/transformations/histogram-equalization";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -189,6 +191,14 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
       newBytes = gammaResult.newBytes;
       newWidth = gammaResult.newWidth;
       newHeight = gammaResult.newHeight;
+
+      break;
+    }
+    case "histogramEqualization": {
+      const equalizationResult = await histogramEqualization(bytes);
+      newBytes = equalizationResult.newBytes;
+      newWidth = equalizationResult.newWidth;
+      newHeight = equalizationResult.newHeight;
 
       break;
     }
@@ -360,6 +370,7 @@ export const App = () => {
               <ZoomIn />
               <ZoomOut />
               <GammaCorrection />
+              <HistogramEqualization />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">

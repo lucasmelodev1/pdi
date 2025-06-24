@@ -44,6 +44,8 @@ type Transformation =
     } | {
       type: "gammaCorrection";
       gamma: number;
+    } | {
+      type: "histogramEqualization";
     };
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
