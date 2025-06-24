@@ -55,6 +55,8 @@ import GammaCorrection from "./components/transformations/gamma-correction";
 import gammaCorrection from "@/utils/transformations/gamma-correction";
 import histogramEqualization from "@/utils/transformations/histogram-equalization";
 import HistogramEqualization from "@/components/transformations/histogram-equalization";
+import BitSlicing from "./components/transformations/bit-slicing";
+import bitSlicing from "@/utils/transformations/bit-slicing";
 
 listenTS("operationImage", async ({ operation, bytes, bytes2 }) => {
   const canvas = document.createElement("canvas");
@@ -201,6 +203,19 @@ listenTS("transformationImage", async ({ transformation: t, bytes }) => {
       newHeight = equalizationResult.newHeight;
 
       break;
+    }
+    case "bitSlicing": {
+      const bitSlicingResults = await bitSlicing(bytes);
+
+      for (const result of bitSlicingResults) {
+        dispatchTS("openImage", {
+          buffer: result.bytes,
+          width: result.width,
+          height: result.height,
+        });
+      }
+
+      return;
     }
   }
 
@@ -371,6 +386,7 @@ export const App = () => {
               <ZoomOut />
               <GammaCorrection />
               <HistogramEqualization />
+              <BitSlicing />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">
