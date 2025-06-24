@@ -48,6 +48,8 @@ type Transformation =
       type: "histogramEqualization";
     } | {
       type: "bitSlicing";
+    } | {
+      type: "invert";
     };
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
