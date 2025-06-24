@@ -23,6 +23,7 @@ import decode from "@/utils/decode";
 import encode from "@/utils/encode";
 import type { Transformation } from "../../shared/universals";
 import invertColors from "@/utils/transformations/invert";
+import applyNonLinear from "@/utils/transformations/non-linear";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -35,6 +36,10 @@ const transformationHandlers = {
   "gammaCorrection": (t: Transformation, bytes: Uint8Array) => gammaCorrection(bytes, (t as any).gamma),
   "histogramEqualization": (_t: Transformation, bytes: Uint8Array) => histogramEqualization(bytes),
   "invert": (t: Transformation, bytes: Uint8Array) => invertColors(bytes),
+  "log": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'log'),
+  "sqrt": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'sqrt'),
+  "exp": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'exp'),
+  "square": (_t: Transformation, bytes: Uint8Array) => applyNonLinear(bytes, 'square'),
 };
 
 const decompositionHandlers = {

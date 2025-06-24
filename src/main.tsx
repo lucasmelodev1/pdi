@@ -29,6 +29,10 @@ import HistogramEqualization from "@/components/transformations/histogram-equali
 import BitSlicing from "./components/transformations/bit-slicing";
 import { useImageProcessing } from "@/hooks/use-image-processing";
 import InvertColors from "@/components/transformations/invert-colors";
+import SqrtTransform from "@/components/transformations/sqrt-transform";
+import SquareTransform from "./components/transformations/square-transform";
+import LogTransform from "./components/transformations/log-transform";
+import ExpTransform from "./components/transformations/exp-transform";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -99,6 +103,10 @@ export const App = () => {
               <HistogramEqualization />
               <BitSlicing />
               <InvertColors />
+              <LogTransform />
+              <SqrtTransform />
+              <ExpTransform />
+              <SquareTransform />
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">

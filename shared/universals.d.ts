@@ -50,6 +50,14 @@ type Transformation =
       type: "bitSlicing";
     } | {
       type: "invert";
+    } | {
+      type: "log";
+    } | {
+      type: "sqrt";
+    } | {
+      type: "exp";
+    } | {
+      type: "square";
     };
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
