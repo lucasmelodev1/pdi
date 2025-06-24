@@ -70,6 +70,8 @@ type Transformation =
       type: "min";
     } | {
       type: "mode";
+    } | {
+      type: "kawahara";
     }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";

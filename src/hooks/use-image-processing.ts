@@ -31,6 +31,7 @@ import {
   minProcessor,
   modeProcessor,
 } from "@/utils/transformations/spatial-filter";
+import { applyEdgePreservingFilter, kawaharaStrategy } from "@/utils/transformations/edge-preserving-filter";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -52,6 +53,7 @@ const transformationHandlers = {
   "max": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, maxProcessor),
   "min": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, minProcessor),
   "mode": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, modeProcessor),
+  "kawahara": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, kawaharaStrategy),
 };
 
 const decompositionHandlers = {

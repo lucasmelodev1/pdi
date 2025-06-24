@@ -37,6 +37,7 @@ import MeanFilter from "@/components/transformations/mean-filter";
 import MedianFilter from "@/components/transformations/median-filter";
 import MaxFilter from "@/components/transformations/max-filter";
 import MinFilter from "@/components/transformations/min-filter";
+import KawaharaFilter from "@/components/transformations/kawahara-filter";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -95,26 +96,42 @@ export const App = () => {
           </AccordionItem>
           <AccordionItem value="transformation">
             <AccordionTrigger>Transformações</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-4">
-              <Scale />
-              <Skew />
-              <Rotation />
-              <Reflection />
-              <Translation />
-              <ZoomIn />
-              <ZoomOut />
-              <GammaCorrection />
-              <HistogramEqualization />
-              <BitSlicing />
-              <InvertColors />
-              <LogTransform />
-              <SqrtTransform />
-              <ExpTransform />
-              <SquareTransform />
-              <MeanFilter />
-              <MedianFilter />
-              <MaxFilter />
-              <MinFilter />
+            <AccordionContent className="flex flex-col gap-4">
+              <p className={"text-sm text-gray-600"}>Básicos</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <Scale />
+                <Skew />
+                <Rotation />
+                <Reflection />
+                <Translation />
+                <ZoomIn />
+                <ZoomOut />
+              </div>
+              <p className={"text-sm text-gray-600"}>Transformações Lineares</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <GammaCorrection />
+                <HistogramEqualization />
+                <BitSlicing />
+                <InvertColors />
+              </div>
+              <p className={"text-sm text-gray-600"}>Operações Não-Lineares</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <LogTransform />
+                <SqrtTransform />
+                <ExpTransform />
+                <SquareTransform />
+              </div>
+              <p className={"text-sm text-gray-600"}>Filtros Espaciais</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <MeanFilter />
+                <MedianFilter />
+                <MaxFilter />
+                <MinFilter />
+              </div>
+              <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <KawaharaFilter />
+              </div>
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="color-decomposition">
