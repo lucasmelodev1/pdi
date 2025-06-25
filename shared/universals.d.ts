@@ -72,6 +72,12 @@ type Transformation =
       type: "mode";
     } | {
       type: "kawahara";
+    } | {
+      type: "tomitaTsuji";
+    } | {
+      type: "nagaoMatsuyama";
+    } | {
+      type: "somboonkaew";
     }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";

@@ -10,8 +10,6 @@ export default async function reflection(
   newWidth: number;
   newHeight: number;
 }> {
-  console.log("horizontal: ", horizontal);
-  console.log("vertical: ", vertical);
   const originalCanvas = document.createElement("canvas");
   const originalCtx = originalCanvas.getContext("2d")!;
   const imageData = await decode(originalCanvas, originalCtx, bytes);

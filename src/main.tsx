@@ -38,6 +38,9 @@ import MedianFilter from "@/components/transformations/median-filter";
 import MaxFilter from "@/components/transformations/max-filter";
 import MinFilter from "@/components/transformations/min-filter";
 import KawaharaFilter from "@/components/transformations/kawahara-filter";
+import TomitaTsujiFilter from "@/components/transformations/tomita-tsuji-filter";
+import NagaoMatsuyamaFilter from "@/components/transformations/nagao-matsuyama-filter";
+import SomboonkaewFilter from "@/components/transformations/somboonkaew-filter";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -131,6 +134,9 @@ export const App = () => {
               <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <KawaharaFilter />
+                <TomitaTsujiFilter />
+                <NagaoMatsuyamaFilter />
+                <SomboonkaewFilter />
               </div>
             </AccordionContent>
           </AccordionItem>

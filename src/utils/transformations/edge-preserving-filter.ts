@@ -89,3 +89,52 @@ export const kawaharaStrategy: EdgePreservingStrategy = {
   kernelSize: 5,
   regions: kawaharaRegions
 };
+
+const tomitaTsujiRegions: Region[] = [
+  // Região 1: Centro 3x3
+  [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]],
+  // Região 2: Superior Esquerdo 3x3 (centrado em (-1,-1) do kernel 5x5)
+  [[-2, -2], [-2, -1], [-2, 0], [-1, -2], [-1, -1], [-1, 0], [0, -2], [0, -1], [0, 0]],
+  // Região 3: Superior Direito 3x3 (centrado em (-1,1) do kernel 5x5)
+  [[-2, 0], [-2, 1], [-2, 2], [-1, 0], [-1, 1], [-1, 2], [0, 0], [0, 1], [0, 2]],
+  // Região 4: Inferior Esquerdo 3x3 (centrado em (1,-1) do kernel 5x5)
+  [[0, -2], [0, -1], [0, 0], [1, -2], [1, -1], [1, 0], [2, -2], [2, -1], [2, 0]],
+  // Região 5: Inferior Direito 3x3 (centrado em (1,1) do kernel 5x5)
+  [[0, 0], [0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
+];
+
+export const tomitaTsujiStrategy: EdgePreservingStrategy = {
+  kernelSize: 5,
+  regions: tomitaTsujiRegions
+};
+
+const nagaoMatsuyamaRegions: Region[] = [
+  [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]],
+  [[-2, -2], [-1, -1], [0, 0], [-1, -2], [-2, -1]], // Noroeste
+  [[-2, 0], [-1, 0], [0, 0], [-1, -1], [-1, 1]],   // Norte
+  [[-2, 2], [-1, 1], [0, 0], [-1, 2], [-2, 1]],   // Nordeste
+  [[0, -2], [0, -1], [0, 0], [-1, -1], [1, -1]],   // Oeste
+  [[0, 2], [0, 1], [0, 0], [-1, 1], [1, 1]],     // Leste
+  [[2, -2], [1, -1], [0, 0], [1, -2], [2, -1]],   // Sudoeste
+  [[2, 0], [1, 0], [0, 0], [1, -1], [1, 1]],     // Sul
+  [[2, 2], [1, 1], [0, 0], [1, 2], [2, 1]],     // Sudeste
+];
+
+export const nagaoMatsuyamaStrategy: EdgePreservingStrategy = {
+  kernelSize: 5,
+  regions: nagaoMatsuyamaRegions
+};
+
+const somboonkaewRegions: Region[] = [
+  // Região 1: Centro 3x3
+  [[-1, -1], [-1, 0], [-1, 1], [0, -1], [0, 0], [0, 1], [1, -1], [1, 0], [1, 1]],
+  [[-2, 0], [-1, 0], [0, 0], [-1, -1], [-1, 1]],   // Norte
+  [[0, 2], [0, 1], [0, 0], [-1, 1], [1, 1]],     // Leste
+  [[2, 0], [1, 0], [0, 0], [1, -1], [1, 1]],     // Sul
+  [[0, -2], [0, -1], [0, 0], [-1, -1], [1, -1]],   // Oeste
+];
+
+export const somboonkaewStrategy: EdgePreservingStrategy = {
+  kernelSize: 5,
+  regions: somboonkaewRegions
+};

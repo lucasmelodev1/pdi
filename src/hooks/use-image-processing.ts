@@ -31,7 +31,11 @@ import {
   minProcessor,
   modeProcessor,
 } from "@/utils/transformations/spatial-filter";
-import { applyEdgePreservingFilter, kawaharaStrategy } from "@/utils/transformations/edge-preserving-filter";
+import {
+  applyEdgePreservingFilter,
+  kawaharaStrategy, nagaoMatsuyamaStrategy, somboonkaewStrategy,
+  tomitaTsujiStrategy
+} from "@/utils/transformations/edge-preserving-filter";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -54,6 +58,9 @@ const transformationHandlers = {
   "min": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, minProcessor),
   "mode": (_t: Transformation, bytes: Uint8Array) => applySpatialFilter(bytes, 3, modeProcessor),
   "kawahara": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, kawaharaStrategy),
+  "tomitaTsuji": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, tomitaTsujiStrategy),
+  "nagaoMatsuyama": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, nagaoMatsuyamaStrategy),
+  "somboonkaew": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, somboonkaewStrategy),
 };
 
 const decompositionHandlers = {
