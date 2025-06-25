@@ -123,14 +123,14 @@ export const App = () => {
           <AccordionItem value="intensity-adjustments">
             <AccordionTrigger>Ajustes de Intensidade</AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-gray-600">Lineares</p>
+              <p className="text-sm text-gray-600 pb-1">Lineares</p>
               <div className="grid grid-cols-4 gap-4 mb-4">
                 <GammaCorrection />
                 <HistogramEqualization />
                 <BitSlicing />
                 <InvertColors />
               </div>
-              <p className="text-sm text-gray-600">Não-Lineares</p>
+              <p className="text-sm text-gray-600 pb-1">Não-Lineares</p>
               <div className="grid grid-cols-4 gap-4 mb-4">
                 <LogTransform />
                 <SqrtTransform />
@@ -144,16 +144,18 @@ export const App = () => {
           <AccordionItem value="spatial-filters">
             <AccordionTrigger>Filtros Espaciais</AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-gray-600">Passa-Baixa</p>
+              <p className="text-sm text-gray-600 pb-1">Passa-Baixa</p>
               <div className="grid grid-cols-4 gap-4 mb-4">
                 <MeanFilter />
                 <MedianFilter />
                 <MaxFilter />
                 <MinFilter />
               </div>
-              <p className="text-sm text-gray-600">Passa-Alta</p>
-              <HighPassFilters />
-              <p className="text-sm text-gray-600">Preservação de Bordas</p>
+              <p className="text-sm text-gray-600 pb-1">Passa-Alta</p>
+              <div className="mb-4">
+                <HighPassFilters />
+              </div>
+              <p className="text-sm text-gray-600 pb-1">Preservação de Bordas</p>
               <div className="grid grid-cols-4 gap-4 mb-4">
                 <KawaharaFilter />
                 <TomitaTsujiFilter />
@@ -183,13 +185,15 @@ export const App = () => {
           <AccordionItem value="structure-detection">
             <AccordionTrigger>Detecção de Estruturas</AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-gray-600">Pontos e Retas</p>
+              <p className="text-sm text-gray-600 pb-1">Pontos e Retas</p>
               <div className="grid grid-cols-4 gap-4 mb-4">
                 <PointDetection />
                 <LineDetection />
               </div>
-              <p className="text-sm text-gray-600">Bordas</p>
-              <EdgeDetection />
+              <p className="text-sm text-gray-600 pb-1">Bordas</p>
+              <div>
+                <EdgeDetection />
+              </div>
             </AccordionContent>
           </AccordionItem>
 
@@ -197,9 +201,11 @@ export const App = () => {
           <AccordionItem value="color">
             <AccordionTrigger>Cores</AccordionTrigger>
             <AccordionContent>
-              <p className="text-sm text-gray-600">Decomposição</p>
-              <ColorDecompositionAccordionItems />
-              <p className="text-sm text-gray-600 mt-4">Pseudocolorização</p>
+              <p className="text-sm text-gray-600 pb-1">Decomposição</p>
+              <div className="mb-4">
+                <ColorDecompositionAccordionItems />
+              </div>
+              <p className="text-sm text-gray-600 pb-1 mt-4">Pseudocolorização</p>
               <div className="grid grid-cols-4 gap-4">
                 <Button
                   onClick={() =>
