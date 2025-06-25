@@ -1,7 +1,6 @@
 import decode from "../decode";
 import encode from "../encode";
 
-// Global thresholding
 export async function globalThreshold(bytes: Uint8Array, threshold: number): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -20,7 +19,6 @@ export async function globalThreshold(bytes: Uint8Array, threshold: number): Pro
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Local mean thresholding
 export async function localMeanThreshold(bytes: Uint8Array, windowSize: number): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -58,7 +56,6 @@ export async function localMeanThreshold(bytes: Uint8Array, windowSize: number):
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Local max thresholding
 export async function localMaxThreshold(bytes: Uint8Array, windowSize: number): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -93,7 +90,6 @@ export async function localMaxThreshold(bytes: Uint8Array, windowSize: number): 
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Local min thresholding
 export async function localMinThreshold(bytes: Uint8Array, windowSize: number): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;
@@ -128,7 +124,6 @@ export async function localMinThreshold(bytes: Uint8Array, windowSize: number): 
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Niblack thresholding
 export async function niblackThreshold(bytes: Uint8Array, windowSize: number, k: number): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d")!;

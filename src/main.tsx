@@ -46,7 +46,7 @@ import HalftoningFilters from "@/components/transformations/halftoning";
 import PointDetection from "@/components/transformations/point-detection";
 import LineDetection from "@/components/transformations/line-detection";
 import EdgeDetection from "@/components/transformations/edge-detection";
-import Thresholding from "@/components/transformations/thresholding";
+import Thresholding from "./components/transformations/thresholding";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -99,68 +99,62 @@ export const App = () => {
       <div className="flex h-full w-full flex-col items-center gap-4 overflow-y-scroll px-8 py-10">
         <h1 className="text-xl font-medium">PDI 2025</h1>
         <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="item-1">
+          {/* 1. Operações */}
+          <AccordionItem value="operations">
             <AccordionTrigger>Operações</AccordionTrigger>
             <OperationsAccordionItems />
           </AccordionItem>
-          <AccordionItem value="transformation">
-            <AccordionTrigger>Transformações</AccordionTrigger>
-            <AccordionContent className="flex flex-col gap-4">
-              <p className={"text-sm text-gray-600"}>Básicos</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
-                <Scale />
-                <Skew />
-                <Rotation />
-                <Reflection />
-                <Translation />
-                <ZoomIn />
-                <ZoomOut />
-              </div>
 
-              <p className={"text-sm text-gray-600"}>Transformações Lineares</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+          {/* 2. Transformações Geométricas */}
+          <AccordionItem value="geometric-transformations">
+            <AccordionTrigger>Transformações Geométricas</AccordionTrigger>
+            <AccordionContent className="grid grid-cols-4 gap-4">
+              <Scale />
+              <Skew />
+              <Rotation />
+              <Reflection />
+              <Translation />
+              <ZoomIn />
+              <ZoomOut />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* 3. Ajustes de Intensidade */}
+          <AccordionItem value="intensity-adjustments">
+            <AccordionTrigger>Ajustes de Intensidade</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-sm text-gray-600">Lineares</p>
+              <div className="grid grid-cols-4 gap-4 mb-4">
                 <GammaCorrection />
                 <HistogramEqualization />
                 <BitSlicing />
                 <InvertColors />
               </div>
-
-              <p className={"text-sm text-gray-600"}>Operações Não-Lineares</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+              <p className="text-sm text-gray-600">Não-Lineares</p>
+              <div className="grid grid-cols-4 gap-4 mb-4">
                 <LogTransform />
                 <SqrtTransform />
                 <ExpTransform />
                 <SquareTransform />
               </div>
+            </AccordionContent>
+          </AccordionItem>
 
-              <p className={"text-sm text-gray-600"}>Filtros Passa-Baixa</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+          {/* 4. Filtros Espaciais */}
+          <AccordionItem value="spatial-filters">
+            <AccordionTrigger>Filtros Espaciais</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-sm text-gray-600">Passa-Baixa</p>
+              <div className="grid grid-cols-4 gap-4 mb-4">
                 <MeanFilter />
                 <MedianFilter />
                 <MaxFilter />
                 <MinFilter />
               </div>
-
-              <p className={"text-sm text-gray-600"}>Filtros Passa-Alta</p>
+              <p className="text-sm text-gray-600">Passa-Alta</p>
               <HighPassFilters />
-
-              <p className={"text-sm text-gray-600"}>Meios-Tons (Halftoning)</p>
-              <HalftoningFilters />
-
-              <p className={"text-sm text-gray-600"}>Limiarização</p>
-              <Thresholding />
-
-              <p className={"text-sm text-gray-600"}>Detecção de Pontos e Retas</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
-                <PointDetection />
-                <LineDetection />
-              </div>
-
-              <p className={"text-sm text-gray-600"}>Detecção de Bordas</p>
-              <EdgeDetection />
-
-              <p className={"text-sm text-gray-600"}>Preservação de Bordas</p>
-              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+              <p className="text-sm text-gray-600">Preservação de Bordas</p>
+              <div className="grid grid-cols-4 gap-4 mb-4">
                 <KawaharaFilter />
                 <TomitaTsujiFilter />
                 <NagaoMatsuyamaFilter />
@@ -168,31 +162,64 @@ export const App = () => {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="color-decomposition">
-            <AccordionTrigger>Decomposição de Cores</AccordionTrigger>
-            <ColorDecompositionAccordionItems />
+
+          {/* 5. Limiarização */}
+          <AccordionItem value="thresholding">
+            <AccordionTrigger>Limiarização</AccordionTrigger>
+            <AccordionContent>
+              <Thresholding />
+            </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="pseudocolorization">
-            <AccordionTrigger>Pseudocolorização</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-4">
-              <Button
-                onClick={() =>
-                  dispatchTS("pseudocolorization", {
-                    style: "heatmap",
-                  })
-                }
-              >
-                Mapa de Calor
-              </Button>
-              <Button
-                onClick={() =>
-                  dispatchTS("pseudocolorization", {
-                    style: "falseColor",
-                  })
-                }
-              >
-                Realce Por Falsa Cor
-              </Button>
+
+          {/* 6. Meios-Tons */}
+          <AccordionItem value="halftoning">
+            <AccordionTrigger>Meios-Tons</AccordionTrigger>
+            <AccordionContent>
+              <HalftoningFilters />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* 7. Detecção de Estruturas */}
+          <AccordionItem value="structure-detection">
+            <AccordionTrigger>Detecção de Estruturas</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-sm text-gray-600">Pontos e Retas</p>
+              <div className="grid grid-cols-4 gap-4 mb-4">
+                <PointDetection />
+                <LineDetection />
+              </div>
+              <p className="text-sm text-gray-600">Bordas</p>
+              <EdgeDetection />
+            </AccordionContent>
+          </AccordionItem>
+
+          {/* 8. Cores */}
+          <AccordionItem value="color">
+            <AccordionTrigger>Cores</AccordionTrigger>
+            <AccordionContent>
+              <p className="text-sm text-gray-600">Decomposição</p>
+              <ColorDecompositionAccordionItems />
+              <p className="text-sm text-gray-600 mt-4">Pseudocolorização</p>
+              <div className="grid grid-cols-4 gap-4">
+                <Button
+                  onClick={() =>
+                    dispatchTS("pseudocolorization", {
+                      style: "heatmap",
+                    })
+                  }
+                >
+                  Mapa de Calor
+                </Button>
+                <Button
+                  onClick={() =>
+                    dispatchTS("pseudocolorization", {
+                      style: "falseColor",
+                    })
+                  }
+                >
+                  Realce Por Falsa Cor
+                </Button>
+              </div>
             </AccordionContent>
           </AccordionItem>
         </Accordion>

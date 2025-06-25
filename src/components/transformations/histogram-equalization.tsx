@@ -15,7 +15,7 @@ export default function HistogramEqualization() {
       }}
     >
       <ContrastIcon />
-      Equalização de Histograma
+      Eq. de Histograma
     </Button>
   );
 }
