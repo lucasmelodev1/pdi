@@ -88,6 +88,19 @@ type Transformation =
   | { type: "stevensonArceDither" }
   | { type: "pointDetection"; T: number }
   | { type: "lineDetection"; direction: 'horizontal' | 'vertical' | '45' | '135'; T: number }
+  | { type: "robertsEdge" }
+  | { type: "robertsCrossEdge" }
+  | { type: "prewittGx" }
+  | { type: "prewittGy" }
+  | { type: "prewittMagnitude" }
+  | { type: "sobelGx" }
+  | { type: "sobelGy" }
+  | { type: "sobelMagnitude" }
+  | { type: "kirschEdge" }
+  | { type: "robinsonEdge" }
+  | { type: "freyChenEdge" }
+  | { type: "laplacianH1" }
+  | { type: "laplacianH2" }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 

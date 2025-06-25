@@ -45,6 +45,7 @@ import HighPassFilters from "@/components/transformations/high-pass-filters";
 import HalftoningFilters from "@/components/transformations/halftoning";
 import PointDetection from "@/components/transformations/point-detection";
 import LineDetection from "@/components/transformations/line-detection";
+import EdgeDetection from "@/components/transformations/edge-detection";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -150,6 +151,9 @@ export const App = () => {
                 <PointDetection />
                 <LineDetection />
               </div>
+
+              <p className={"text-sm text-gray-600"}>Detecção de Bordas</p>
+              <EdgeDetection />
 
               <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>

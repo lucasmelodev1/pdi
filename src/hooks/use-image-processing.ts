@@ -39,6 +39,7 @@ import {
 import { highPassFilter, highPassBoostFilter } from "@/utils/transformations/high-pass-filters";
 import { orderedDither, floydSteinbergDither, rogersDither, jarvisJudiceNinkeDither, stuckiDither, stevensonArceDither } from "@/utils/transformations/halftoning";
 import { pointDetection, lineDetection } from "@/utils/transformations/point-detection";
+import { robertsEdge, robertsCrossEdge } from "@/utils/transformations/edge-detection";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -74,6 +75,8 @@ const transformationHandlers = {
   "stevensonArceDither": (_t: Transformation, bytes: Uint8Array) => stevensonArceDither(bytes),
   "pointDetection": (t: Transformation, bytes: Uint8Array) => pointDetection(bytes, (t as any).T),
   "lineDetection": (t: Transformation, bytes: Uint8Array) => lineDetection(bytes, (t as any).direction, (t as any).T),
+  "robertsEdge": (_t: Transformation, bytes: Uint8Array) => robertsEdge(bytes),
+  "robertsCrossEdge": (_t: Transformation, bytes: Uint8Array) => robertsCrossEdge(bytes),
 };
 
 const decompositionHandlers = {
