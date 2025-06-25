@@ -43,6 +43,7 @@ import NagaoMatsuyamaFilter from "@/components/transformations/nagao-matsuyama-f
 import SomboonkaewFilter from "@/components/transformations/somboonkaew-filter";
 import HighPassFilters from "@/components/transformations/high-pass-filters";
 import HalftoningFilters from "@/components/transformations/halftoning";
+import PointDetection from "@/components/transformations/point-detection";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -112,6 +113,7 @@ export const App = () => {
                 <ZoomIn />
                 <ZoomOut />
               </div>
+
               <p className={"text-sm text-gray-600"}>Transformações Lineares</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <GammaCorrection />
@@ -119,6 +121,7 @@ export const App = () => {
                 <BitSlicing />
                 <InvertColors />
               </div>
+
               <p className={"text-sm text-gray-600"}>Operações Não-Lineares</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <LogTransform />
@@ -126,6 +129,7 @@ export const App = () => {
                 <ExpTransform />
                 <SquareTransform />
               </div>
+
               <p className={"text-sm text-gray-600"}>Filtros Passa-Baixa</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <MeanFilter />
@@ -133,10 +137,18 @@ export const App = () => {
                 <MaxFilter />
                 <MinFilter />
               </div>
+
               <p className={"text-sm text-gray-600"}>Filtros Passa-Alta</p>
               <HighPassFilters />
+
               <p className={"text-sm text-gray-600"}>Meios-Tons (Halftoning)</p>
               <HalftoningFilters />
+
+              <p className={"text-sm text-gray-600"}>Detecção de Pontos</p>
+              <div className={"grid grid-cols-4 gap-4 mb-4"}>
+                <PointDetection />
+              </div>
+
               <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <KawaharaFilter />

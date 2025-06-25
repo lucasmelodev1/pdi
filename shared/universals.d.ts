@@ -86,6 +86,7 @@ type Transformation =
   | { type: "jarvisJudiceNinkeDither" }
   | { type: "stuckiDither" }
   | { type: "stevensonArceDither" }
+  | { type: "pointDetection"; T: number }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 
