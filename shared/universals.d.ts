@@ -87,6 +87,7 @@ type Transformation =
   | { type: "stuckiDither" }
   | { type: "stevensonArceDither" }
   | { type: "pointDetection"; T: number }
+  | { type: "lineDetection"; direction: 'horizontal' | 'vertical' | '45' | '135'; T: number }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 

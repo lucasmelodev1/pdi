@@ -29,7 +29,6 @@ export default async function scale(
   const newImageData = newCtx.createImageData(newWidth, newHeight);
   const destData = newImageData.data;
 
-  // Nearest-neighbor scaling
   for (let y = 0; y < newHeight; y++) {
     for (let x = 0; x < newWidth; x++) {
       const srcX = Math.floor(x / scaleX);

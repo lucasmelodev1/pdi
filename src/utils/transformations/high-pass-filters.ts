@@ -1,7 +1,6 @@
 import decode from "../decode";
 import encode from "../encode";
 
-// Matrizes dos filtros passa-alta
 const kernels = {
   h1: [
     [0, -1, 0],
@@ -59,13 +58,11 @@ export async function highPassFilter(
         const idx = (y * width + x) * 4 + c;
         destPixels[idx] = Math.min(255, Math.max(0, sum));
       }
-      // Copia o alpha
       const idx = (y * width + x) * 4 + 3;
       destPixels[idx] = srcPixels[idx];
     }
   }
 
-  // Copia bordas sem filtro
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -115,13 +112,11 @@ export async function highPassBoostFilter(
         const idx = (y * width + x) * 4 + c;
         destPixels[idx] = Math.min(255, Math.max(0, sum));
       }
-      // Copia o alpha
       const idx = (y * width + x) * 4 + 3;
       destPixels[idx] = srcPixels[idx];
     }
   }
 
-  // Copia bordas sem filtro
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
