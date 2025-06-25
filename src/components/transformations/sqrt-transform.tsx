@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { dispatchTS } from "@/utils/utils";
+import { Radical } from "lucide-react";
 
 export default function SqrtTransform() {
   return (
@@ -13,6 +14,7 @@ export default function SqrtTransform() {
         });
       }}
     >
+      <Radical className="w-6 h-6" />
       Raiz
     </Button>
   );

@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { dispatchTS } from "@/utils/utils";
+import { Superscript } from "lucide-react";
 
 export default function ExpTransform() {
   return (
@@ -13,6 +14,7 @@ export default function ExpTransform() {
         });
       }}
     >
+      <Superscript className="w-6 h-6" />
       Exp
     </Button>
   );

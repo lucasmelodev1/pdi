@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { dispatchTS } from "@/utils/utils";
+import { Superscript } from "lucide-react";
 
 export default function SquareTransform() {
   return (
@@ -13,6 +14,7 @@ export default function SquareTransform() {
         });
       }}
     >
+      <Superscript className="w-6 h-6" />
       Potência
     </Button>
   );

@@ -1,5 +1,6 @@
 import { Button } from "../ui/button";
 import { dispatchTS } from "@/utils/utils";
+import { Logs } from "lucide-react";
 
 export default function LogTransform() {
   return (
@@ -13,6 +14,7 @@ export default function LogTransform() {
         });
       }}
     >
+      <Logs className="w-6 h-6" />
       Log
     </Button>
   );
