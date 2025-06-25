@@ -46,6 +46,7 @@ import HalftoningFilters from "@/components/transformations/halftoning";
 import PointDetection from "@/components/transformations/point-detection";
 import LineDetection from "@/components/transformations/line-detection";
 import EdgeDetection from "@/components/transformations/edge-detection";
+import Thresholding from "@/components/transformations/thresholding";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -146,6 +147,9 @@ export const App = () => {
               <p className={"text-sm text-gray-600"}>Meios-Tons (Halftoning)</p>
               <HalftoningFilters />
 
+              <p className={"text-sm text-gray-600"}>Limiarização</p>
+              <Thresholding />
+
               <p className={"text-sm text-gray-600"}>Detecção de Pontos e Retas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <PointDetection />
@@ -155,7 +159,7 @@ export const App = () => {
               <p className={"text-sm text-gray-600"}>Detecção de Bordas</p>
               <EdgeDetection />
 
-              <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
+              <p className={"text-sm text-gray-600"}>Preservação de Bordas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <KawaharaFilter />
                 <TomitaTsujiFilter />

@@ -15,7 +15,7 @@ export default function TomitaTsujiFilter() {
       }}
     >
       <CircleDot />
-      Filtro Tomita & Tsuji
+      Tomita & Tsuji
     </Button>
   );
 }

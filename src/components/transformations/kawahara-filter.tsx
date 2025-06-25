@@ -16,7 +16,7 @@ export default function KawaharaFilter() {
       }}
     >
       <Spline />
-      Filtro Kawahara
+      Kawahara
     </Button>
   );
 }

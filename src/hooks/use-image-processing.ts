@@ -40,6 +40,7 @@ import { highPassFilter, highPassBoostFilter } from "@/utils/transformations/hig
 import { orderedDither, floydSteinbergDither, rogersDither, jarvisJudiceNinkeDither, stuckiDither, stevensonArceDither } from "@/utils/transformations/halftoning";
 import { pointDetection, lineDetection } from "@/utils/transformations/point-detection";
 import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy, prewittMagnitude, sobelGx, sobelGy, sobelMagnitude, kirschEdge, robinsonEdge, freyChenEdge, laplacianH1, laplacianH2 } from "@/utils/transformations/edge-detection";
+import { globalThreshold, localMeanThreshold, localMaxThreshold, localMinThreshold, niblackThreshold } from "@/utils/transformations/thresholding";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -88,6 +89,11 @@ const transformationHandlers = {
   "freyChenEdge": (_t: Transformation, bytes: Uint8Array) => freyChenEdge(bytes),
   "laplacianH1": (_t: Transformation, bytes: Uint8Array) => laplacianH1(bytes),
   "laplacianH2": (_t: Transformation, bytes: Uint8Array) => laplacianH2(bytes),
+  "globalThreshold": (t: Transformation, bytes: Uint8Array) => globalThreshold(bytes, (t as any).threshold),
+  "localMeanThreshold": (t: Transformation, bytes: Uint8Array) => localMeanThreshold(bytes, (t as any).windowSize),
+  "localMaxThreshold": (t: Transformation, bytes: Uint8Array) => localMaxThreshold(bytes, (t as any).windowSize),
+  "localMinThreshold": (t: Transformation, bytes: Uint8Array) => localMinThreshold(bytes, (t as any).windowSize),
+  "niblackThreshold": (t: Transformation, bytes: Uint8Array) => niblackThreshold(bytes, (t as any).windowSize, (t as any).k),
 };
 
 const decompositionHandlers = {

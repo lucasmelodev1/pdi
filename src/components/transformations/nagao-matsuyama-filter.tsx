@@ -15,7 +15,7 @@ export default function NagaoMatsuyamaFilter() {
       }}
     >
       <AppWindow />
-      Filtro Nagao & Matsuyama
+      Nagao & Matsuyama
     </Button>
   );
 }

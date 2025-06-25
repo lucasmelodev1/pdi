@@ -15,7 +15,7 @@ export default function SomboonkaewFilter() {
       }}
     >
       <Compass />
-      Filtro Somboonkaew
+      Somboonkaew
     </Button>
   );
 }
