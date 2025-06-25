@@ -82,6 +82,10 @@ type Transformation =
   | { type: "highPassBoost"; boostFactor?: number }
   | { type: "orderedDither"; matrix: "2x2" | "2x3" | "3x3" }
   | { type: "floydSteinbergDither" }
+  | { type: "rogersDither" }
+  | { type: "jarvisJudiceNinkeDither" }
+  | { type: "stuckiDither" }
+  | { type: "stevensonArceDither" }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { dispatchTS } from "@/utils/utils";
-import { Grid2x2, Grid3x3, Dot, ScatterChart } from "lucide-react";
+import { Grid2x2, Grid3x3, ScatterChart } from "lucide-react";
 
 const btnClass = "flex h-24 w-full flex-col items-center gap-2";
 
@@ -22,6 +22,22 @@ export default function HalftoningFilters() {
       <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "floydSteinbergDither" } })}>
         <ScatterChart className="w-6 h-6" />
         Floyd-Steinberg
+      </Button>
+      <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "rogersDither" } })}>
+        <ScatterChart className="w-6 h-6" />
+        Rogers
+      </Button>
+      <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "jarvisJudiceNinkeDither" } })}>
+        <ScatterChart className="w-6 h-6" />
+        Jarvis-Judice-Ninke
+      </Button>
+      <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "stuckiDither" } })}>
+        <ScatterChart className="w-6 h-6" />
+        Stucki
+      </Button>
+      <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "stevensonArceDither" } })}>
+        <ScatterChart className="w-6 h-6" />
+        Stevenson-Arce
       </Button>
     </div>
   );
