@@ -37,6 +37,7 @@ import {
   tomitaTsujiStrategy
 } from "@/utils/transformations/edge-preserving-filter";
 import { highPassFilter, highPassBoostFilter } from "@/utils/transformations/high-pass-filters";
+import { orderedDither, floydSteinbergDither } from "@/utils/transformations/halftoning";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -64,6 +65,8 @@ const transformationHandlers = {
   "somboonkaew": (_t: Transformation, bytes: Uint8Array) => applyEdgePreservingFilter(bytes, somboonkaewStrategy),
   "highPass": (t: Transformation, bytes: Uint8Array) => highPassFilter(bytes, (t as any).filterType),
   "highPassBoost": (t: Transformation, bytes: Uint8Array) => highPassBoostFilter(bytes, (t as any).boostFactor ?? 1.5),
+  "orderedDither": (t: Transformation, bytes: Uint8Array) => orderedDither(bytes, (t as any).matrix),
+  "floydSteinbergDither": (_t: Transformation, bytes: Uint8Array) => floydSteinbergDither(bytes),
 };
 
 const decompositionHandlers = {

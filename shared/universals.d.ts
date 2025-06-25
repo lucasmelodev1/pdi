@@ -80,6 +80,8 @@ type Transformation =
       type: "somboonkaew";
     } | { type: "highPass"; filterType: "h1" | "h2" | "m1" | "m2" | "m3" }
   | { type: "highPassBoost"; boostFactor?: number }
+  | { type: "orderedDither"; matrix: "2x2" | "2x3" | "3x3" }
+  | { type: "floydSteinbergDither" }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 

@@ -42,6 +42,7 @@ import TomitaTsujiFilter from "@/components/transformations/tomita-tsuji-filter"
 import NagaoMatsuyamaFilter from "@/components/transformations/nagao-matsuyama-filter";
 import SomboonkaewFilter from "@/components/transformations/somboonkaew-filter";
 import HighPassFilters from "@/components/transformations/high-pass-filters";
+import HalftoningFilters from "@/components/transformations/halftoning";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -125,7 +126,7 @@ export const App = () => {
                 <ExpTransform />
                 <SquareTransform />
               </div>
-              <p className={"text-sm text-gray-600"}>Filtros Espaciais</p>
+              <p className={"text-sm text-gray-600"}>Filtros Passa-Baixa</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <MeanFilter />
                 <MedianFilter />
@@ -134,6 +135,8 @@ export const App = () => {
               </div>
               <p className={"text-sm text-gray-600"}>Filtros Passa-Alta</p>
               <HighPassFilters />
+              <p className={"text-sm text-gray-600"}>Meios-Tons (Halftoning)</p>
+              <HalftoningFilters />
               <p className={"text-sm text-gray-600"}>Filtros de Preservação de Bordas</p>
               <div className={"grid grid-cols-4 gap-4 mb-4"}>
                 <KawaharaFilter />
