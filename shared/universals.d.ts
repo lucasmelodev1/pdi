@@ -78,7 +78,8 @@ type Transformation =
       type: "nagaoMatsuyama";
     } | {
       type: "somboonkaew";
-    }
+    } | { type: "highPass"; filterType: "h1" | "h2" | "m1" | "m2" | "m3" }
+  | { type: "highPassBoost"; boostFactor?: number }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 
