@@ -39,7 +39,7 @@ import {
 import { highPassFilter, highPassBoostFilter } from "@/utils/transformations/high-pass-filters";
 import { orderedDither, floydSteinbergDither, rogersDither, jarvisJudiceNinkeDither, stuckiDither, stevensonArceDither } from "@/utils/transformations/halftoning";
 import { pointDetection, lineDetection } from "@/utils/transformations/point-detection";
-import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy, prewittMagnitude, sobelGx, sobelGy, sobelMagnitude } from "@/utils/transformations/edge-detection";
+import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy, prewittMagnitude, sobelGx, sobelGy, sobelMagnitude, kirschEdge, robinsonEdge, freyChenEdge, laplacianH1, laplacianH2 } from "@/utils/transformations/edge-detection";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -83,6 +83,11 @@ const transformationHandlers = {
   "sobelGx": (_t: Transformation, bytes: Uint8Array) => sobelGx(bytes),
   "sobelGy": (_t: Transformation, bytes: Uint8Array) => sobelGy(bytes),
   "sobelMagnitude": (_t: Transformation, bytes: Uint8Array) => sobelMagnitude(bytes),
+  "kirschEdge": (_t: Transformation, bytes: Uint8Array) => kirschEdge(bytes),
+  "robinsonEdge": (_t: Transformation, bytes: Uint8Array) => robinsonEdge(bytes),
+  "freyChenEdge": (_t: Transformation, bytes: Uint8Array) => freyChenEdge(bytes),
+  "laplacianH1": (_t: Transformation, bytes: Uint8Array) => laplacianH1(bytes),
+  "laplacianH2": (_t: Transformation, bytes: Uint8Array) => laplacianH2(bytes),
 };
 
 const decompositionHandlers = {
