@@ -39,7 +39,7 @@ import {
 import { highPassFilter, highPassBoostFilter } from "@/utils/transformations/high-pass-filters";
 import { orderedDither, floydSteinbergDither, rogersDither, jarvisJudiceNinkeDither, stuckiDither, stevensonArceDither } from "@/utils/transformations/halftoning";
 import { pointDetection, lineDetection } from "@/utils/transformations/point-detection";
-import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy } from "@/utils/transformations/edge-detection";
+import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy, prewittMagnitude, sobelGx, sobelGy, sobelMagnitude } from "@/utils/transformations/edge-detection";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -79,6 +79,10 @@ const transformationHandlers = {
   "robertsCrossEdge": (_t: Transformation, bytes: Uint8Array) => robertsCrossEdge(bytes),
   "prewittGx": (_t: Transformation, bytes: Uint8Array) => prewittGx(bytes),
   "prewittGy": (_t: Transformation, bytes: Uint8Array) => prewittGy(bytes),
+  "prewittMagnitude": (_t: Transformation, bytes: Uint8Array) => prewittMagnitude(bytes),
+  "sobelGx": (_t: Transformation, bytes: Uint8Array) => sobelGx(bytes),
+  "sobelGy": (_t: Transformation, bytes: Uint8Array) => sobelGy(bytes),
+  "sobelMagnitude": (_t: Transformation, bytes: Uint8Array) => sobelMagnitude(bytes),
 };
 
 const decompositionHandlers = {
