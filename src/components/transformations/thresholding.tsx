@@ -14,7 +14,7 @@ export default function Thresholding() {
   const [k, setK] = useState(-0.2);
 
   return (
-    <div className="grid grid-cols-4 gap-4 mb-4">
+    <div className="grid grid-cols-5 gap-3 mb-4">
       <Button className={btnClass} onClick={() => setOpen("global")}> <SlidersHorizontal className="w-6 h-6" /> Global</Button>
       <Button className={btnClass} onClick={() => setOpen("mean")}> <Waves className="w-6 h-6" /> Local Média</Button>
       <Button className={btnClass} onClick={() => setOpen("max")}> <ArrowUp className="w-6 h-6" /> Local Máximo</Button>

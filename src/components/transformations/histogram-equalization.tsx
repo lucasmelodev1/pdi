@@ -5,7 +5,7 @@ import { ContrastIcon } from "lucide-react";
 export default function HistogramEqualization() {
   return (
     <Button
-      className="flex h-24 w-full flex-col items-center gap-2"
+      className="flex h-24 w-full flex-col items-center gap-2 text-wrap text-xs"
       onClick={() => {
         dispatchTS("transformation", {
           transformation: {
@@ -15,7 +15,7 @@ export default function HistogramEqualization() {
       }}
     >
       <ContrastIcon />
-      Eq. de Histograma
+      Equalização de Histograma
     </Button>
   );
 }

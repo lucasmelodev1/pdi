@@ -6,7 +6,7 @@ const btnClass = "flex h-24 w-full flex-col items-center gap-2";
 
 const HighPassFilters = () => {
   return (
-    <div className="grid grid-cols-4 gap-4 mb-4">
+    <div className="grid grid-cols-5 gap-3 mb-4">
       <Button className={btnClass} onClick={() => dispatchTS("transformation", { transformation: { type: "highPass", filterType: "h1" } })}>
         <Filter className="w-6 h-6" />
         H1

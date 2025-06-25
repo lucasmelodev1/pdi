@@ -10,8 +10,10 @@
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
-    --primary: 0 0% 9%;
-    --primary-foreground: 0 0% 98%;
+    /* --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%; */
+    --primary: 222 89% 53%; /* azul.600 do Tailwind, por exemplo */
+    --primary-foreground: 0 0% 100%; /* branco */
     --secondary: 0 0% 96.1%;
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;

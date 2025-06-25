@@ -108,7 +108,7 @@ export const App = () => {
           {/* 2. Transformações Geométricas */}
           <AccordionItem value="geometric-transformations">
             <AccordionTrigger>Transformações Geométricas</AccordionTrigger>
-            <AccordionContent className="grid grid-cols-4 gap-4">
+            <AccordionContent className="grid grid-cols-5 gap-3">
               <Scale />
               <Skew />
               <Rotation />
@@ -124,14 +124,14 @@ export const App = () => {
             <AccordionTrigger>Ajustes de Intensidade</AccordionTrigger>
             <AccordionContent>
               <p className="text-sm text-gray-600 pb-1">Lineares</p>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-5 gap-3 mb-4">
                 <GammaCorrection />
                 <HistogramEqualization />
                 <BitSlicing />
                 <InvertColors />
               </div>
               <p className="text-sm text-gray-600 pb-1">Não-Lineares</p>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-5 gap-3 mb-4">
                 <LogTransform />
                 <SqrtTransform />
                 <ExpTransform />
@@ -145,7 +145,7 @@ export const App = () => {
             <AccordionTrigger>Filtros Espaciais</AccordionTrigger>
             <AccordionContent>
               <p className="text-sm text-gray-600 pb-1">Passa-Baixa</p>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-5 gap-3 mb-4">
                 <MeanFilter />
                 <MedianFilter />
                 <MaxFilter />
@@ -156,7 +156,7 @@ export const App = () => {
                 <HighPassFilters />
               </div>
               <p className="text-sm text-gray-600 pb-1">Preservação de Bordas</p>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-5 gap-3 mb-4">
                 <KawaharaFilter />
                 <TomitaTsujiFilter />
                 <NagaoMatsuyamaFilter />
@@ -186,7 +186,7 @@ export const App = () => {
             <AccordionTrigger>Detecção de Estruturas</AccordionTrigger>
             <AccordionContent>
               <p className="text-sm text-gray-600 pb-1">Pontos e Retas</p>
-              <div className="grid grid-cols-4 gap-4 mb-4">
+              <div className="grid grid-cols-5 gap-3 mb-4">
                 <PointDetection />
                 <LineDetection />
               </div>
@@ -206,7 +206,7 @@ export const App = () => {
                 <ColorDecompositionAccordionItems />
               </div>
               <p className="text-sm text-gray-600 pb-1 mt-4">Pseudocolorização</p>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="grid grid-cols-5 gap-3">
                 <Button
                   onClick={() =>
                     dispatchTS("pseudocolorization", {
@@ -235,12 +235,41 @@ export const App = () => {
           className="invisible"
           onChange={handleFile}
         />
-        <Button
-          className="absolute bottom-4 right-4"
-          onClick={() => inputRef.current?.click()}
-        >
-          +
-        </Button>
+        <div className="absolute bottom-4 right-4 flex flex-row gap-2">
+          <Button
+            onClick={() => {
+              // Atalho para operação XOR
+              dispatchTS("operation", { operation: "xor" });
+            }}
+            variant="default"
+            size="icon"
+            title="Comparar imagens (XOR)"
+          >
+            {/* Ícone de comparação: dois quadrados sobrepostos */}
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="lucide lucide-compare"
+            >
+              <rect x="3" y="3" width="13" height="13" rx="2" />
+              <rect x="8" y="8" width="13" height="13" rx="2" />
+            </svg>
+          </Button>
+          <Button
+            onClick={() => inputRef.current?.click()}
+            size="icon"
+            title="Adicionar imagem (PGM)"
+          >
+            +
+          </Button>
+        </div>
         {/* <div className="flex flex-row gap-4">
           <Button onClick={onClickCreate} size={"sm"}>
             Create
@@ -256,7 +285,7 @@ export const App = () => {
 
 function OperationsAccordionItems() {
   return (
-    <AccordionContent className="grid grid-cols-4 gap-4">
+    <AccordionContent className="grid grid-cols-5 gap-3">
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() => {
@@ -266,7 +295,7 @@ function OperationsAccordionItems() {
         }}
       >
         <PlusIcon />
-        Soma
+        <span className="whitespace-normal">Soma</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -277,7 +306,7 @@ function OperationsAccordionItems() {
         }}
       >
         <MinusIcon />
-        Subtração
+        <span className="whitespace-normal">Subtração</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -288,7 +317,7 @@ function OperationsAccordionItems() {
         }}
       >
         <XIcon />
-        Multiplicação
+        <span className="whitespace-normal">Multiplicação</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -299,7 +328,7 @@ function OperationsAccordionItems() {
         }}
       >
         <DivideIcon />
-        Divisão
+        <span className="whitespace-normal">Divisão</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -333,7 +362,7 @@ function OperationsAccordionItems() {
           <path d="M8 10a2 2 0 0 1 2-2h5a1 1 0 0 1 1 1v5a2 2 0 0 1-2 2H9a1 1 0 0 1-1-1z" />
           <path d="M8 2h2" />
         </svg>
-        AND
+        <span className="whitespace-normal">AND</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -357,7 +386,7 @@ function OperationsAccordionItems() {
         >
           <path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1h3a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2v-3a1 1 0 0 0-1-1z" />
         </svg>
-        OR
+        <span className="whitespace-normal">OR</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -382,7 +411,7 @@ function OperationsAccordionItems() {
           <path d="M16 12v2a2 2 0 0 1-2 2H9a1 1 0 0 0-1 1v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h0" />
           <path d="M4 16a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3a1 1 0 0 1-1 1h-5a2 2 0 0 0-2 2v2" />
         </svg>
-        XOR
+        <span className="whitespace-normal">XOR</span>
       </Button>
     </AccordionContent>
   );
@@ -390,7 +419,7 @@ function OperationsAccordionItems() {
 
 function ColorDecompositionAccordionItems() {
   return (
-    <AccordionContent className="grid grid-cols-4 gap-4">
+    <AccordionContent className="grid grid-cols-5 gap-3">
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
         onClick={() =>
@@ -404,7 +433,7 @@ function ColorDecompositionAccordionItems() {
           <Square className="size-5 fill-green-500" />
           <Square className="size-5 fill-blue-500" />
         </div>
-        RGB
+        <span className="whitespace-normal">RGB</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -420,7 +449,7 @@ function ColorDecompositionAccordionItems() {
           <Square className="size-5 fill-yellow-500" />
           <Square className="size-5 fill-gray-500" />
         </div>
-        CMYK
+        <span className="whitespace-normal">CMYK</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -435,7 +464,7 @@ function ColorDecompositionAccordionItems() {
           <Square className="size-5 fill-pink-600" />
           <Square className="size-5 fill-yellow-500" />
         </div>
-        CMY
+        <span className="whitespace-normal">CMY</span>
       </Button>
       <Button
         className="flex h-24 w-full flex-col items-center gap-2"
@@ -450,7 +479,7 @@ function ColorDecompositionAccordionItems() {
           <Square className="size-5 fill-orange-600" />
           <Square className="size-5 fill-gray-500" />
         </div>
-        YUV
+        <span className="whitespace-normal">YUV</span>
       </Button>
       <Button
         onClick={() =>
@@ -459,7 +488,7 @@ function ColorDecompositionAccordionItems() {
           })
         }
       >
-        HSB
+        <span className="whitespace-normal">HSB</span>
       </Button>
       <Button
         onClick={() =>
@@ -468,7 +497,7 @@ function ColorDecompositionAccordionItems() {
           })
         }
       >
-        HSL
+        <span className="whitespace-normal">HSL</span>
       </Button>
     </AccordionContent>
   );
