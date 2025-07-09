@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import type { narutoCharacter } from "./lib/types";
 import { Input } from "./components/ui/input";
-import { parsePGM } from "./utils/pgm";
 import { dispatchTS, listenTS } from "./utils/utils";
 import {
   Accordion,
@@ -48,33 +47,163 @@ import LineDetection from "@/components/transformations/line-detection";
 import EdgeDetection from "@/components/transformations/edge-detection";
 import Thresholding from "./components/transformations/thresholding";
 import RegionGrowing from "@/components/transformations/region-growth";
-import Watershed from "@/components/transformations/watershed";
 
-async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
-  const file = e.target.files?.[0];
+interface PGMImage {
+  width: number;
+  height: number;
+  pixels: Uint8ClampedArray;
+}
+
+function parsePGM(buffer: Uint8Array): PGMImage {
+  const decoder = new TextDecoder();
+  const headerChunk = decoder.decode(buffer.slice(0, 256));
+
+  const magicNumberMatch = headerChunk.match(/^(P[25])/);
+  if (!magicNumberMatch) {
+    throw new Error("Invalid or unsupported PGM format. Only P2 (ASCII) and P5 (binary) are supported.");
+  }
+  const magicNumber = magicNumberMatch[1];
+
+  const dimensionsRegex = /(?:^|\s+)(\d+)\s+(\d+)\s+(\d+)\s/;
+  const dimensionsMatch = headerChunk.substring(magicNumber.length).replace(/#.*?\n/g, '\n').match(dimensionsRegex);
+
+  if (!dimensionsMatch) {
+    throw new Error("Could not parse PGM dimensions and max value from header.");
+  }
+
+  const [, widthStr, heightStr, maxValStr] = dimensionsMatch;
+  const width = parseInt(widthStr, 10);
+  const height = parseInt(heightStr, 10);
+  const maxVal = parseInt(maxValStr, 10);
+
+  if (maxVal > 255) {
+    throw new Error("PGM files with a max value greater than 255 are not supported.");
+  }
+
+  const headerEndIndex = buffer.indexOf(10, magicNumberMatch.index! + dimensionsMatch.index! + dimensionsMatch[0].length) + 1;
+
+  const rgbaPixels = new Uint8ClampedArray(width * height * 4);
+  let pixelValues: number[] | Uint8Array;
+
+  if (magicNumber === 'P2') {
+    const pixelString = decoder.decode(buffer.slice(headerEndIndex));
+    pixelValues = pixelString.trim().split(/\s+/).map(Number);
+  } else {
+    pixelValues = buffer.slice(headerEndIndex);
+  }
+
+  if (pixelValues.length < width * height) {
+    throw new Error("PGM file data is incomplete or corrupted.");
+  }
+
+  for (let i = 0; i < width * height; i++) {
+    const grayscaleValue = pixelValues[i];
+    const pixelIndex = i * 4;
+    const normalizedValue = (255 * grayscaleValue) / maxVal;
+    rgbaPixels[pixelIndex] = normalizedValue;
+    rgbaPixels[pixelIndex + 1] = normalizedValue;
+    rgbaPixels[pixelIndex + 2] = normalizedValue;
+    rgbaPixels[pixelIndex + 3] = 255;
+  }
+
+  return { width, height, pixels: rgbaPixels };
+}
+
+async function handleFile(e: React.ChangeEvent<HTMLInputElement>): Promise<void> {
+  const target = e.target as HTMLInputElement;
+  const file = target.files?.[0];
   if (!file) return;
 
-  const buffer = await file.arrayBuffer();
-  const { width, height, pixels } = parsePGM(new Uint8Array(buffer));
+  let canvas: HTMLCanvasElement | null = null;
 
-  // Draw to canvas
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext("2d")!;
-  const imageData = new ImageData(pixels, width, height);
-  ctx.putImageData(imageData, 0, 0);
+  try {
+    switch (file.type) {
+      case 'image/pgm':
+      case 'image/x-portable-graymap':
+      {
+        console.log("Processing PGM image...");
+        const buffer = await file.arrayBuffer();
+        const { width, height, pixels } = parsePGM(new Uint8Array(buffer));
 
-  canvas.toBlob((blob) => {
-    if (!blob) return;
-    blob.arrayBuffer().then((pngBuffer) => {
-      dispatchTS("openImage", {
-        buffer: pngBuffer,
-        width,
-        height,
-      });
-    });
-  }, "image/png");
+        canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        if (!ctx) {
+          throw new Error("Could not get 2D rendering context.");
+        }
+        const imageData = new ImageData(pixels, width, height);
+        ctx.putImageData(imageData, 0, 0);
+        break;
+      }
+
+      case 'image/png':
+      case 'image/jpeg':
+      case 'image/gif':
+      case 'image/webp':
+      case 'image/bmp': {
+        console.log(`Processing ${file.type} image...`);
+        canvas = await new Promise<HTMLCanvasElement>((resolve, reject) => {
+          const img = new Image();
+          const url = URL.createObjectURL(file);
+          img.onload = () => {
+            const tempCanvas = document.createElement("canvas");
+            tempCanvas.width = img.naturalWidth;
+            tempCanvas.height = img.naturalHeight;
+            const tempCtx = tempCanvas.getContext("2d");
+            if (!tempCtx) {
+              reject(new Error("Could not get 2D context for image canvas."));
+              URL.revokeObjectURL(url);
+              return;
+            }
+            tempCtx.drawImage(img, 0, 0);
+            URL.revokeObjectURL(url);
+            resolve(tempCanvas);
+          };
+          img.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("Failed to load image."));
+          };
+          img.src = url;
+        });
+        break;
+      }
+
+      default:
+        throw new Error(`Unsupported file type: ${file.type || 'unknown'}`);
+    }
+
+    if (canvas) {
+      const { width, height } = canvas;
+
+      console.log("Canvas created:", canvas);
+
+      canvas.toBlob((blob) => {
+        if (!blob) {
+          console.error("Could not convert canvas to blob.");
+          return;
+        }
+        blob.arrayBuffer().then((pngBuffer) => {
+          // Dispatch the action with the image data.
+          dispatchTS("openImage", {
+            buffer: pngBuffer,
+            width,
+            height,
+          });
+        }).catch(err => console.error("Error reading blob buffer:", err));
+      }, "image/png");
+    }
+  } catch (err) {
+    // Type-safe error handling
+    if (err instanceof Error) {
+      console.error("An error occurred:", err.message);
+    } else {
+      console.error("An unknown error occurred:", err);
+    }
+  } finally {
+    // Reset file input to allow uploading the same file again
+    target.value = "";
+  }
 }
 
 export const App = () => {
@@ -236,7 +365,6 @@ export const App = () => {
             <AccordionContent>
               <div className="grid grid-cols-5 gap-3 mb-4">
                 <RegionGrowing />
-                <Watershed />
               </div>
             </AccordionContent>
           </AccordionItem>
@@ -277,7 +405,7 @@ export const App = () => {
           <Button
             onClick={() => inputRef.current?.click()}
             size="icon"
-            title="Adicionar imagem (PGM)"
+            title="Adicionar imagem"
           >
             +
           </Button>
