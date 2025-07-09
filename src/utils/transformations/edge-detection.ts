@@ -1,7 +1,6 @@
 import decode from "../decode";
 import encode from "../encode";
 
-// Laplaciano H1
 export async function laplacianH1(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [0, -1, 0],
@@ -33,7 +32,7 @@ export async function laplacianH1(bytes: Uint8Array): Promise<{ newBytes: Uint8A
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -49,7 +48,6 @@ export async function laplacianH1(bytes: Uint8Array): Promise<{ newBytes: Uint8A
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Laplaciano H2
 export async function laplacianH2(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [-1, -1, -1],
@@ -71,6 +69,7 @@ export async function laplacianH2(bytes: Uint8Array): Promise<{ newBytes: Uint8A
           const px = x + kx;
           const py = y + ky;
           const idx = (py * width + px) * 4;
+
           const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
           sum += gray * kernel[ky + 1][kx + 1];
         }
@@ -81,7 +80,7 @@ export async function laplacianH2(bytes: Uint8Array): Promise<{ newBytes: Uint8A
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -97,9 +96,7 @@ export async function laplacianH2(bytes: Uint8Array): Promise<{ newBytes: Uint8A
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Roberts
 export async function robertsEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
-  // Roberts kernels (2x2)
   const Gx = [
     [1, 0],
     [0, -1],
@@ -124,7 +121,7 @@ export async function robertsEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8A
           const px = x + kx;
           const py = y + ky;
           const idx = (py * width + px) * 4;
-          // Luminância
+
           const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
           sumX += gray * Gx[ky][kx];
           sumY += gray * Gy[ky][kx];
@@ -137,7 +134,7 @@ export async function robertsEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8A
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === height - 1 || x === width - 1) {
@@ -153,9 +150,7 @@ export async function robertsEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8A
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Roberts cruzado
 export async function robertsCrossEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
-  // Roberts cross kernels (2x2)
   const Gx = [
     [1, -1],
     [1, -1],
@@ -193,7 +188,7 @@ export async function robertsCrossEdge(bytes: Uint8Array): Promise<{ newBytes: U
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === height - 1 || x === width - 1) {
@@ -209,7 +204,6 @@ export async function robertsCrossEdge(bytes: Uint8Array): Promise<{ newBytes: U
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Prewitt Gx
 export async function prewittGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [-1, 0, 1],
@@ -241,7 +235,7 @@ export async function prewittGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Arr
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -257,7 +251,6 @@ export async function prewittGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Arr
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Prewitt Gy
 export async function prewittGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [1, 1, 1],
@@ -289,7 +282,7 @@ export async function prewittGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Arr
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -305,7 +298,6 @@ export async function prewittGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Arr
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Prewitt Magnitude
 export async function prewittMagnitude(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernelGx = [
     [-1, 0, 1],
@@ -333,6 +325,7 @@ export async function prewittMagnitude(bytes: Uint8Array): Promise<{ newBytes: U
           const px = x + kx;
           const py = y + ky;
           const idx = (py * width + px) * 4;
+
           const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
           sumX += gray * kernelGx[ky + 1][kx + 1];
           sumY += gray * kernelGy[ky + 1][kx + 1];
@@ -361,7 +354,6 @@ export async function prewittMagnitude(bytes: Uint8Array): Promise<{ newBytes: U
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Sobel Gx
 export async function sobelGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [-1, 0, 1],
@@ -393,7 +385,7 @@ export async function sobelGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Array
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -409,7 +401,6 @@ export async function sobelGx(bytes: Uint8Array): Promise<{ newBytes: Uint8Array
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Sobel Gy
 export async function sobelGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernel = [
     [1, 2, 1],
@@ -441,7 +432,7 @@ export async function sobelGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Array
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -457,7 +448,6 @@ export async function sobelGy(bytes: Uint8Array): Promise<{ newBytes: Uint8Array
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Sobel Magnitude
 export async function sobelMagnitude(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernelGx = [
     [-1, 0, 1],
@@ -497,7 +487,7 @@ export async function sobelMagnitude(bytes: Uint8Array): Promise<{ newBytes: Uin
       dest[idx + 3] = data[idx + 3];
     }
   }
-  // Copia bordas sem filtro
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -513,7 +503,6 @@ export async function sobelMagnitude(bytes: Uint8Array): Promise<{ newBytes: Uin
   return { newBytes, newWidth: width, newHeight: height };
 }
 
-// Kirsch
 export async function kirschEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8Array; newWidth: number; newHeight: number }> {
   const kernels = [
     [[5, 5, 5], [-3, 0, -3], [-3, -3, -3]],
@@ -554,6 +543,7 @@ export async function kirschEdge(bytes: Uint8Array): Promise<{ newBytes: Uint8Ar
       dest[idx + 3] = data[idx + 3];
     }
   }
+
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {

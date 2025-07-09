@@ -38,10 +38,10 @@ export default async function bitSlicing(
       const bitValue = (grayValue >> bit) & 1;
       const color = bitValue === 1 ? 255 : 0;
 
-      planePixels[i * 4 + 0] = color; // R
-      planePixels[i * 4 + 1] = color; // G
-      planePixels[i * 4 + 2] = color; // B
-      planePixels[i * 4 + 3] = 255;   // A
+      planePixels[i * 4] = color;
+      planePixels[i * 4 + 1] = color;
+      planePixels[i * 4 + 2] = color;
+      planePixels[i * 4 + 3] = 255;
     }
 
     const newBytes = await encode(planeCanvas, planeCtx, planeImageData);

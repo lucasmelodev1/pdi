@@ -47,6 +47,8 @@ import PointDetection from "@/components/transformations/point-detection";
 import LineDetection from "@/components/transformations/line-detection";
 import EdgeDetection from "@/components/transformations/edge-detection";
 import Thresholding from "./components/transformations/thresholding";
+import RegionGrowing from "@/components/transformations/region-growth";
+import Watershed from "@/components/transformations/watershed";
 
 async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
   const file = e.target.files?.[0];
@@ -225,6 +227,16 @@ export const App = () => {
                 >
                   Realce Por Falsa Cor
                 </Button>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          {/* Adicione dentro do AccordionItem apropriado (sugiro criar um novo para "Segmentação") */}
+          <AccordionItem value="segmentation">
+            <AccordionTrigger>Segmentação</AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-5 gap-3 mb-4">
+                <RegionGrowing />
+                <Watershed />
               </div>
             </AccordionContent>
           </AccordionItem>

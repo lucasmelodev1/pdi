@@ -1,6 +1,107 @@
 import decode from "../decode";
 import encode from "../encode";
 
+interface HSL {
+  h: number;
+  s: number;
+  l: number;
+}
+
+interface ImageDimensions {
+  width: number;
+  height: number;
+}
+
+function calculateHistogram(hslPixels: HSL[]): number[] {
+  const histogram = new Array(256).fill(0);
+  hslPixels.forEach(pixel => {
+    const lightnessBin = Math.round(pixel.l * 255);
+    histogram[lightnessBin]++;
+  });
+  return histogram;
+}
+
+function calculateCDF(histogram: number[]): number[] {
+  const cdf = new Array(256).fill(0);
+  cdf[0] = histogram[0];
+  
+  for (let i = 1; i < 256; i++) {
+    cdf[i] = cdf[i - 1] + histogram[i];
+  }
+  return cdf;
+}
+
+function findCDFMin(cdf: number[]): number {
+  return cdf.find(value => value > 0) || 0;
+}
+
+function createLookupTable(cdf: number[], cdfMin: number, totalPixels: number): Uint8Array {
+  const lut = new Uint8Array(256);
+  const denominator = totalPixels - cdfMin;
+
+  if (denominator <= 0) {
+    for (let i = 0; i < 256; i++) lut[i] = i;
+    return lut;
+  }
+
+  for (let i = 0; i < 256; i++) {
+    lut[i] = Math.round(((cdf[i] - cdfMin) / denominator) * 255);
+  }
+  return lut;
+}
+
+export default async function histogramEqualization(
+  bytes: Uint8Array
+): Promise<{
+  newBytes: Uint8Array;
+  newWidth: number;
+  newHeight: number;
+}> {
+  const originalCanvas = document.createElement("canvas");
+  const originalCtx = originalCanvas.getContext("2d")!;
+  const imageData = await decode(originalCanvas, originalCtx, bytes);
+  const { width, height } = imageData;
+  const srcData = imageData.data;
+
+  const hslPixels: HSL[] = [];
+  for (let i = 0; i < srcData.length; i += 4) {
+    const [h, s, l] = rgbToHsl(srcData[i], srcData[i + 1], srcData[i + 2]);
+    hslPixels.push({ h, s, l });
+  }
+
+  const histogram = calculateHistogram(hslPixels);
+  const cdf = calculateCDF(histogram);
+  const cdfMin = findCDFMin(cdf);
+  const lut = createLookupTable(cdf, cdfMin, width * height);
+
+  const newCanvas = document.createElement("canvas");
+  newCanvas.width = width;
+  newCanvas.height = height;
+  const newCtx = newCanvas.getContext("2d")!;
+  const newImageData = newCtx.createImageData(width, height);
+  const destData = newImageData.data;
+
+  hslPixels.forEach((pixel, i) => {
+    const oldLightnessBin = Math.round(pixel.l * 255);
+    const newLightness = lut[oldLightnessBin] / 255;
+    const [r, g, b] = hslToRgb(pixel.h, pixel.s, newLightness);
+
+    const index = i * 4;
+    destData[index] = r;
+    destData[index + 1] = g;
+    destData[index + 2] = b;
+    destData[index + 3] = srcData[index + 3]; // Preserve alpha channel
+  });
+
+  newCtx.putImageData(newImageData, 0, 0);
+  
+  return {
+    newBytes: await encode(newCanvas, newCtx, newImageData),
+    newWidth: width,
+    newHeight: height
+  };
+}
+
 function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
   (r /= 255), (g /= 255), (b /= 255);
   const max = Math.max(r, g, b),
@@ -48,84 +149,4 @@ function hslToRgb(h: number, s: number, l: number): [number, number, number] {
     b = hue2rgb(p, q, h - 1 / 3);
   }
   return [r * 255, g * 255, b * 255];
-}
-
-export default async function histogramEqualization(
-  bytes: Uint8Array
-): Promise<{
-  newBytes: Uint8Array;
-  newWidth: number;
-  newHeight: number;
-}> {
-  const originalCanvas = document.createElement("canvas");
-  const originalCtx = originalCanvas.getContext("2d")!;
-  const imageData = await decode(originalCanvas, originalCtx, bytes);
-
-  const srcData = imageData.data;
-  const width = imageData.width;
-  const height = imageData.height;
-  const totalPixels = width * height;
-
-  const histogram = new Array(256).fill(0);
-  const hslPixels = [];
-
-  for (let i = 0; i < srcData.length; i += 4) {
-    const [h, s, l] = rgbToHsl(srcData[i], srcData[i + 1], srcData[i + 2]);
-    hslPixels.push({ h, s, l });
-    const l_quantized = Math.round(l * 255);
-    histogram[l_quantized]++;
-  }
-
-  const cdf = new Array(256).fill(0);
-  cdf[0] = histogram[0];
-  for (let i = 1; i < 256; i++) {
-    cdf[i] = cdf[i - 1] + histogram[i];
-  }
-
-  let cdf_min = 0;
-  for (let i = 0; i < 256; i++) {
-    if (cdf[i] > 0) {
-      cdf_min = cdf[i];
-      break;
-    }
-  }
-
-  const lut = new Uint8Array(256);
-  const denominator = totalPixels - cdf_min;
-
-  if (denominator <= 0) {
-    for (let i = 0; i < 256; i++) lut[i] = i;
-  } else {
-    for (let i = 0; i < 256; i++) {
-      lut[i] = Math.round(((cdf[i] - cdf_min) / denominator) * 255);
-    }
-  }
-
-  const newCanvas = document.createElement("canvas");
-  newCanvas.width = width;
-  newCanvas.height = height;
-  const newCtx = newCanvas.getContext("2d")!;
-  const newImageData = newCtx.createImageData(width, height);
-  const destData = newImageData.data;
-
-  for (let i = 0; i < hslPixels.length; i++) {
-    const { h, s } = hslPixels[i];
-    const old_l_quantized = Math.round(hslPixels[i].l * 255);
-    const new_l = lut[old_l_quantized] / 255;
-
-    const [r, g, b] = hslToRgb(h, s, new_l);
-
-    const index = i * 4;
-    destData[index] = r;
-    destData[index + 1] = g;
-    destData[index + 2] = b;
-    destData[index + 3] = srcData[index + 3]; // Manter o canal alfa original
-  }
-
-  newCtx.putImageData(newImageData, 0, 0);
-  return {
-    newBytes: await encode(newCanvas, newCtx, newImageData),
-    newWidth: width,
-    newHeight: height
-  };
 }

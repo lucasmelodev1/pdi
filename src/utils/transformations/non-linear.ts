@@ -33,7 +33,7 @@ export default async function applyNonLinear(
       }
       break;
     case "exp":
-      c = 255 / (Math.exp(1) - 1); // Escala baseada em exp(i/255)
+      c = 255 / (Math.exp(1) - 1);
       for (let i = 0; i < 256; i++) {
         lut[i] = c * (Math.exp(i / 255) - 1);
       }
@@ -47,9 +47,9 @@ export default async function applyNonLinear(
   }
 
   for (let i = 0; i < pixels.length; i += 4) {
-    pixels[i] = lut[pixels[i]];         // R
-    pixels[i + 1] = lut[pixels[i + 1]]; // G
-    pixels[i + 2] = lut[pixels[i + 2]]; // B
+    pixels[i] = lut[pixels[i]];
+    pixels[i + 1] = lut[pixels[i + 1]];
+    pixels[i + 2] = lut[pixels[i + 2]];
   }
 
   const newBytes = await encode(canvas, ctx, imageData);

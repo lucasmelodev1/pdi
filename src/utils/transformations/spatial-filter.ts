@@ -70,18 +70,6 @@ export const meanProcessor: NeighborhoodProcessor = (neighbors) => {
   };
 };
 
-// export const medianProcessor: NeighborhoodProcessor = (neighbors) => {
-//   const findMedian = (arr: number[]) => {
-//     const sorted = [...arr].sort((a, b) => a - b);
-//     return sorted[Math.floor(sorted.length / 2)];
-//   };
-//   return {
-//     r: findMedian(neighbors.r),
-//     g: findMedian(neighbors.g),
-//     b: findMedian(neighbors.b),
-//   };
-// };
-
 export const medianProcessor: NeighborhoodProcessor = (neighbors) => {
   const findMedianWithHistogram = (arr: number[]) => {
     const histogram = new Uint16Array(256); // Uint16Array to be safe with larger kernels

@@ -41,6 +41,7 @@ import { orderedDither, floydSteinbergDither, rogersDither, jarvisJudiceNinkeDit
 import { pointDetection, lineDetection } from "@/utils/transformations/point-detection";
 import { robertsEdge, robertsCrossEdge, prewittGx, prewittGy, prewittMagnitude, sobelGx, sobelGy, sobelMagnitude, kirschEdge, robinsonEdge, freyChenEdge, laplacianH1, laplacianH2 } from "@/utils/transformations/edge-detection";
 import { globalThreshold, localMeanThreshold, localMaxThreshold, localMinThreshold, niblackThreshold } from "@/utils/transformations/thresholding";
+import regionGrowing from "@/utils/transformations/region-growth";
 
 const transformationHandlers = {
   "scale": (t: Transformation, bytes: Uint8Array) => scale(bytes, (t as any).x, (t as any).y),
@@ -94,6 +95,8 @@ const transformationHandlers = {
   "localMaxThreshold": (t: Transformation, bytes: Uint8Array) => localMaxThreshold(bytes, (t as any).windowSize),
   "localMinThreshold": (t: Transformation, bytes: Uint8Array) => localMinThreshold(bytes, (t as any).windowSize),
   "niblackThreshold": (t: Transformation, bytes: Uint8Array) => niblackThreshold(bytes, (t as any).windowSize, (t as any).k),
+  "regionGrowing": (t: Transformation, bytes: Uint8Array) => 
+    regionGrowing(bytes, (t as any).seedX, (t as any).seedY, (t as any).threshold),
 };
 
 const decompositionHandlers = {

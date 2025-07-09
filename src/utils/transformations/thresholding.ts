@@ -144,6 +144,7 @@ export async function niblackThreshold(bytes: Uint8Array, windowSize: number, k:
           const ny = y + dy;
           if (nx >= 0 && nx < width && ny >= 0 && ny < height) {
             const idx = (ny * width + nx) * 4;
+
             const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
             sum += gray;
             sumSq += gray * gray;

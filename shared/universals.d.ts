@@ -101,6 +101,17 @@ type Transformation =
   | { type: "freyChenEdge" }
   | { type: "laplacianH1" }
   | { type: "laplacianH2" }
+  | {
+      type: "regionGrowing";
+      seedX: number;
+      seedY: number;
+      threshold: number;
+    }
+  | {
+      type: "watershed";
+      threshold: number;
+      highlightBoundaries: boolean;
+    }
 
 type ColorSpectrum = "rgb" | "cmyk" | "cmy" | "hsb" | "hsl" | "yuv";
 

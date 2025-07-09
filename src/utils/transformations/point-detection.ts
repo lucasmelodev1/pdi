@@ -1,14 +1,12 @@
 import decode from "../decode";
 import encode from "../encode";
 
-// Máscara Laplaciana para detecção de pontos
 const mask = [
   [0, -1, 0],
   [-1, 4, -1],
   [0, -1, 0],
 ];
 
-// Máscaras para detecção de retas
 const lineKernels = {
   horizontal: [
     [-1, -1, -1],
@@ -51,7 +49,7 @@ export async function pointDetection(
           const px = x + kx;
           const py = y + ky;
           const idx = (py * width + px) * 4;
-          // Luminância
+
           const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
           sum += gray * mask[ky + 1][kx + 1];
         }
@@ -63,7 +61,6 @@ export async function pointDetection(
     }
   }
 
-  // Copia bordas sem filtro
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
@@ -101,7 +98,7 @@ export async function lineDetection(
           const px = x + kx;
           const py = y + ky;
           const idx = (py * width + px) * 4;
-          // Luminância
+
           const gray = 0.299 * data[idx] + 0.587 * data[idx + 1] + 0.114 * data[idx + 2];
           sum += gray * kernel[ky + 1][kx + 1];
         }
@@ -113,7 +110,6 @@ export async function lineDetection(
     }
   }
 
-  // Copia bordas sem filtro
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
       if (y === 0 || y === height - 1 || x === 0 || x === width - 1) {
