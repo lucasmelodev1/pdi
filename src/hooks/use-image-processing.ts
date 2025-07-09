@@ -185,6 +185,7 @@ export function useImageProcessing() {
       const pixels2 = imageData2.data;
 
       for (let i = 0; i < pixels.length; i += 4) {
+
         switch (operation) {
           case "sum":
             pixels[i] += pixels2[i];
@@ -197,14 +198,14 @@ export function useImageProcessing() {
             pixels[i + 2] -= pixels2[i + 2];
             break;
           case "division":
-            pixels[i] /= pixels2[i] || 1; // Evita divisão por zero
-            pixels[i + 1] /= pixels2[i + 1] || 1;
-            pixels[i + 2] /= pixels2[i + 2] || 1;
+            pixels[i] = pixels2[i] === 0 ? 255 : Math.min(255, (pixels[i] * 255) / pixels2[i]);
+            pixels[i + 1] = pixels2[i + 1] === 0 ? 255 : Math.min(255, (pixels[i + 1] * 255) / pixels2[i + 1]);
+            pixels[i + 2] = pixels2[i + 2] === 0 ? 255 : Math.min(255, (pixels[i + 2] * 255) / pixels2[i + 2]);
             break;
           case "multiplication":
-            pixels[i] *= pixels2[i];
-            pixels[i + 1] *= pixels2[i + 1];
-            pixels[i + 2] *= pixels2[i + 2];
+            pixels[i] = (pixels[i] * pixels2[i]) / 255;
+            pixels[i + 1] = (pixels[i + 1] * pixels2[i + 1]) / 255;
+            pixels[i + 2] = (pixels[i + 2] * pixels2[i + 2]) / 255;
             break;
           case "and":
             pixels[i] &= pixels2[i];
