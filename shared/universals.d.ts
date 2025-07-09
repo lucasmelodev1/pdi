@@ -127,6 +127,7 @@ export interface EventTS {
   };
   operation: {
     operation: Operation;
+    inverse: boolean;
   };
   operationImage: {
     operation: Operation;

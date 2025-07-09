@@ -35,9 +35,10 @@ listenTS("openImage", (msg) => {
   figma.currentPage.appendChild(node);
 });
 
-listenTS("operation", async ({ operation }) => {
-  const node = figma.currentPage.selection[0] as GeometryMixin;
-  const node2 = figma.currentPage.selection[1] as GeometryMixin;
+listenTS("operation", async ({ operation, inverse }) => {
+  const node = figma.currentPage.selection[inverse ? 1 : 0] as GeometryMixin;
+  const node2 = figma.currentPage.selection[inverse ? 0 : 1] as GeometryMixin;
+
   for (let i = 0; i < (node.fills as Paint[]).length; i++) {
     const paint = node.fills[i];
     const paint2 = node2.fills[i];
